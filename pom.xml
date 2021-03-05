@@ -48,6 +48,7 @@
                 <configuration>
                     <forkCount>1</forkCount>
                     <reuseForks>true</reuseForks>
+                    <!--suppress UnresolvedMavenProperty -->
                     <argLine>${argLine} -Xmx1g -Xms1g</argLine>
                     <useFile>false</useFile>
                     <trimStackTrace>false</trimStackTrace>
@@ -311,10 +312,21 @@
                 <scope>test</scope>
                 <classifier>tests</classifier>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.16</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fury</groupId>
+            <artifactId>furyutils</artifactId>
+            <version>0.0.1</version>
+        </dependency>
         <!-- test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
