@@ -3,16 +3,16 @@ package com.mercadolibre.federico_rivarola_pf.dtos;
 public class PartDTO {
     private String code;
     private String description;
-    private Double widthDimension;
-    private Double tallDimension;
-    private Double longDimension;
-    private Double netWeight;
+    private Integer widthDimension;
+    private Integer tallDimension;
+    private Integer longDimension;
+    private Integer netWeight;
     private Integer idProvider;
 
     public PartDTO() {
     }
 
-    public PartDTO(String code, String description, Double widthDimension, Double tallDimension, Double longDimension, Double netWeight, Integer idProvider) {
+    public PartDTO(String code, String description, Integer widthDimension, Integer tallDimension, Integer longDimension, Integer netWeight, Integer idProvider) {
         this.code = code;
         this.description = description;
         this.widthDimension = widthDimension;
@@ -38,35 +38,35 @@ public class PartDTO {
         this.description = description;
     }
 
-    public Double getWidthDimension() {
+    public Integer getWidthDimension() {
         return widthDimension;
     }
 
-    public void setWidthDimension(Double widthDimension) {
+    public void setWidthDimension(Integer widthDimension) {
         this.widthDimension = widthDimension;
     }
 
-    public Double getTallDimension() {
+    public Integer getTallDimension() {
         return tallDimension;
     }
 
-    public void setTallDimension(Double tallDimension) {
+    public void setTallDimension(Integer tallDimension) {
         this.tallDimension = tallDimension;
     }
 
-    public Double getLongDimension() {
+    public Integer getLongDimension() {
         return longDimension;
     }
 
-    public void setLongDimension(Double longDimension) {
+    public void setLongDimension(Integer longDimension) {
         this.longDimension = longDimension;
     }
 
-    public Double getNetWeight() {
+    public Integer getNetWeight() {
         return netWeight;
     }
 
-    public void setNetWeight(Double netWeight) {
+    public void setNetWeight(Integer netWeight) {
         this.netWeight = netWeight;
     }
 
