@@ -1,2 +1,4 @@
-package com.mercadolibre.federico_rivarola_pf.model;public class Part {
+package com.mercadolibre.federico_rivarola_pf.model;
+
+public class Part {
 }
