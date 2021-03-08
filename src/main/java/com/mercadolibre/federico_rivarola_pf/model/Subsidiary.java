@@ -3,12 +3,14 @@ package com.mercadolibre.federico_rivarola_pf.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "providers")
-public class Provider {
+@Table(name = "subsidiary")
+public class Subsidiary {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_provider")
+    @Column(name = "id_subsidiary")
     private String id;
+    @Column(name = "accessToken")
+    private String accessToken;
     @Column(name = "name")
     private String name;
     @Column(name = "address")
@@ -18,8 +20,9 @@ public class Provider {
     @Column(name = "country")
     private String country;
 
-    public Provider(String id, String name, String address, String phone, String country) {
+    public Subsidiary(String id, String accessToken, String name, String address, String phone, String country) {
         this.id = id;
+        this.accessToken = accessToken;
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -32,6 +35,14 @@ public class Provider {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public String getName() {

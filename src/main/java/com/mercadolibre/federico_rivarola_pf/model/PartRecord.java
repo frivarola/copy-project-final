@@ -1,25 +1,33 @@
 package com.mercadolibre.federico_rivarola_pf.model;
 
+import javax.persistence.*;
+
 public class PartRecord {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_part_record")
     private String id;
+    @Column(name = "lastModification")
     private String lastModification;
+    @Column(name = "normal_price")
     private Double normalPrice;
+    @Column(name = "sale_price")
     private Double salePrice;
+    @Column(name = "urgent_price")
     private Double urgentPrice;
-    private String idDiscountRate;
-    private String idPart;
+    @ManyToOne()
+    private Part part;
 
     public PartRecord() {
     }
 
-    public PartRecord(String id, String lastModification, Double normalPrice, Double salePrice, Double urgentPrice, String idDiscountRate, String idPart) {
+    public PartRecord(String id, String lastModification, Double normalPrice, Double salePrice, Double urgentPrice, Part part) {
         this.id = id;
         this.lastModification = lastModification;
         this.normalPrice = normalPrice;
         this.salePrice = salePrice;
         this.urgentPrice = urgentPrice;
-        this.idDiscountRate = idDiscountRate;
-        this.idPart = idPart;
+        this.part = part;
     }
 
     public String getId() {
@@ -62,19 +70,11 @@ public class PartRecord {
         this.urgentPrice = urgentPrice;
     }
 
-    public String getIdDiscountRate() {
-        return idDiscountRate;
+    public Part getPart() {
+        return part;
     }
 
-    public void setIdDiscountRate(String idDiscountRate) {
-        this.idDiscountRate = idDiscountRate;
-    }
-
-    public String getIdPart() {
-        return idPart;
-    }
-
-    public void setIdPart(String idPart) {
-        this.idPart = idPart;
+    public void setPart(Part part) {
+        this.part = part;
     }
 }

@@ -1,30 +1,47 @@
 package com.mercadolibre.federico_rivarola_pf.model;
 
-public class Part {
-    private String code;
-    private String description;
-    private Integer widthDimension;
-    private Integer tallDimension;
-    private Integer longDimension;
-    private Integer netWeight;
-    private Integer idProvider;
+import javax.persistence.*;
+import java.util.List;
 
-    public Part(String code, String description, Integer widthDimension, Integer tallDimension, Integer longDimension, Integer netWeight, Integer idProvider) {
-        this.code = code;
+@Entity
+@Table(name = "parts")
+public class Part {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_part")
+    private String id;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "widthDimension")
+    private Integer widthDimension;
+    @Column(name = "tallDimension")
+    private Integer tallDimension;
+    @Column(name = "longDimension")
+    private Integer longDimension;
+    @Column(name = "netWeight")
+    private Integer netWeight;
+    @ManyToOne()
+    private Provider provider;
+    @OneToMany
+    private List<PartRecord> partRecords;
+
+    public Part(String id, String description, Integer widthDimension, Integer tallDimension, Integer longDimension, Integer netWeight, Provider provider, List<PartRecord> partRecords) {
+        this.id = id;
         this.description = description;
         this.widthDimension = widthDimension;
         this.tallDimension = tallDimension;
         this.longDimension = longDimension;
         this.netWeight = netWeight;
-        this.idProvider = idProvider;
+        this.provider = provider;
+        this.partRecords = partRecords;
     }
 
-    public String getCode() {
-        return code;
+    public String getId() {
+        return id;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -67,11 +84,11 @@ public class Part {
         this.netWeight = netWeight;
     }
 
-    public Integer getIdProvider() {
-        return idProvider;
+    public Provider getIdProvider() {
+        return provider;
     }
 
-    public void setIdProvider(Integer idProvider) {
-        this.idProvider = idProvider;
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 }

@@ -1,21 +1,16 @@
 package com.mercadolibre.federico_rivarola_pf.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "stock")
 public class Stock {
-    private String idPart;
+    @ManyToOne()
+    @JoinColumn(name = "id_part", nullable = false)
+    private Part part;
+    @Column(name = "quantity")
     private Integer quantity;
-
-    public Stock(String idPart, Integer quantity) {
-        this.idPart = idPart;
-        this.quantity = quantity;
-    }
-
-    public String getIdPart() {
-        return idPart;
-    }
-
-    public void setIdPart(String idPart) {
-        this.idPart = idPart;
-    }
+    //@Column(name = "id_subsidiary")
 
     public Integer getQuantity() {
         return quantity;
