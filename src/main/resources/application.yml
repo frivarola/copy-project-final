@@ -7,6 +7,18 @@ spring:
     add-mappings: false # Whether to enable default resource handling.
   mvc:
     throw-exception-if-no-handler-found: true # Whether a "NoHandlerFoundException" should be thrown if no Handler was found to process a request.
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+meli:
+  credential:
+    db:
+      host: DB_MYSQL_DESAENV03_DELUXEDB_DELUXEDB_ENDPOINT
+      name: deluxedb
+      username: deluxedb_RPROD
+      password: DB_MYSQL_DESAENV03_DELUXEDB_DELUXEDB_RPROD
 
 server:
   compression:
