@@ -2,6 +2,8 @@ package com.mercadolibre.federico_rivarola_pf.model;
 
 import javax.persistence.*;
 
+@Entity
+@Table(name = "part_records")
 public class PartRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,6 +18,7 @@ public class PartRecord {
     @Column(name = "urgent_price")
     private Double urgentPrice;
     @ManyToOne()
+    @JoinColumn(name = "id_part")
     private Part part;
 
     public PartRecord() {

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
-import com.mercadolibre.routing.RoutingFilter;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

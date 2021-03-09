@@ -13,9 +13,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(classes = Application.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = { "SCOPE_SUFFIX = integration_test" })
 public abstract class IntegrationTest {
+/*
 
 	@AfterEach
 	protected void afterEach() {
 		RequestMockHolder.clear();
 	}
+*/
 }

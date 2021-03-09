@@ -1,6 +1,5 @@
 package com.mercadolibre.federico_rivarola_pf.repositories.interfaces;
 
-import com.mercadolibre.federico_rivarola_pf.model.Part;
 import com.mercadolibre.federico_rivarola_pf.model.PartRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,10 +9,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IPartsRepository {
+public interface IPartsRecordRepository extends JpaRepository {
+    @Query("SELECT pr FROM PartRecord pr")
+    List<PartRecord> findAll();
+    @Query("SELECT pr FROM PartRecord pr WHERE pr.part.id = :idPart")
+    List<PartRecord> findByIdPart(@Param("idPart") String idPart);
 
-    @Query("SELECT p FROM Part p")
-    List<Part> findAll();
-    @Query("SELECT p FROM Part p WHERE p.part.id = :idPart")
-    List<Part> findByIdPart(@Param("idPart") String idPart);
 }

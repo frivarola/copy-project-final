@@ -1,6 +1,5 @@
 package com.mercadolibre.federico_rivarola_pf.config;
-
-import com.mercadolibre.threading.executor.MeliExecutors;
+import com.mercadolibre.threading.MeliExecutors;
 import java.util.concurrent.ExecutorService;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;

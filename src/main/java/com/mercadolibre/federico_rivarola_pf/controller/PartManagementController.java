@@ -1,16 +1,16 @@
 package com.mercadolibre.federico_rivarola_pf.controller;
 
-import com.mercadolibre.federico_rivarola_pf.services.PartManagmentService;
+import com.mercadolibre.federico_rivarola_pf.services.PartManagementService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path="/api/v1/parts")
 public class PartManagementController {
-    PartManagmentService partManagmentService;
+    PartManagementService partManagementService;
 
-    public PartManagementController(PartManagmentService partManagmentService) {
-        this.partManagmentService = partManagmentService;
+    public PartManagementController(PartManagementService partManagementService) {
+        this.partManagementService = partManagementService;
     }
 
 

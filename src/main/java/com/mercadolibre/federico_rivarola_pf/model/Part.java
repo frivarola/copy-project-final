@@ -22,7 +22,7 @@ public class Part {
     private Integer netWeight;
     @ManyToOne()
     private Provider provider;
-    @OneToMany
+    @OneToMany(mappedBy = "part")
     private List<PartRecord> partRecords;
 
     public Part(String id, String description, Integer widthDimension, Integer tallDimension, Integer longDimension, Integer netWeight, Provider provider, List<PartRecord> partRecords) {

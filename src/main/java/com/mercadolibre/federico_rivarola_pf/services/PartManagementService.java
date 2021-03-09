@@ -1,8 +1,8 @@
 package com.mercadolibre.federico_rivarola_pf.services;
 
 import com.mercadolibre.federico_rivarola_pf.dtos.PartDTO;
-import com.mercadolibre.federico_rivarola_pf.repositories.PartsRepository;
-import com.mercadolibre.federico_rivarola_pf.repositories.StockRepository;
+import com.mercadolibre.federico_rivarola_pf.repositories.interfaces.IPartsRepository;
+import com.mercadolibre.federico_rivarola_pf.repositories.interfaces.IStockRepository;
 import com.mercadolibre.federico_rivarola_pf.services.interfaces.IPartManagementService;
 import com.mercadolibre.federico_rivarola_pf.util.enums.OrderType;
 import com.mercadolibre.federico_rivarola_pf.util.enums.Querytype;
@@ -12,11 +12,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class PartManagmentService implements IPartManagementService {
-    PartsRepository partsRepository;
-    StockRepository stockRepository;
+public class PartManagementService implements IPartManagementService {
+    IPartsRepository partsRepository;
+    IStockRepository stockRepository;
 
-    public PartManagmentService(PartsRepository partsRepository, StockRepository stockRepository) {
+    public PartManagementService(IPartsRepository partsRepository, IStockRepository stockRepository) {
         this.partsRepository = partsRepository;
         this.stockRepository = stockRepository;
     }
