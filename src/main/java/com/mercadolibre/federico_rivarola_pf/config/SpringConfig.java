@@ -36,12 +36,12 @@ public class SpringConfig implements WebMvcConfigurer {
 		objectMapper.setDateFormat(sdf);
 		return objectMapper;
 	}
-
+/*
 	@Bean
 	@Order(1)
 	public RoutingFilter getRoutingFilter() {
 		return new RoutingFilter();
-	}
+	}*/
 
 	private AfterburnerModule createAfterburnerModule() {
 		AfterburnerModule afterburnerModule = new AfterburnerModule();

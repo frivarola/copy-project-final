@@ -25,6 +25,9 @@ public class Part {
     @OneToMany(mappedBy = "part")
     private List<PartRecord> partRecords;
 
+    public Part() {
+    }
+
     public Part(String id, String description, Integer widthDimension, Integer tallDimension, Integer longDimension, Integer netWeight, Provider provider, List<PartRecord> partRecords) {
         this.id = id;
         this.description = description;

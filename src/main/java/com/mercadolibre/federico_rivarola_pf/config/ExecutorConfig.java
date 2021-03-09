@@ -1,5 +1,5 @@
 package com.mercadolibre.federico_rivarola_pf.config;
-import com.mercadolibre.threading.MeliExecutors;
+//import com.mercadolibre.threading.MeliExecutors;
 import java.util.concurrent.ExecutorService;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
@@ -36,6 +36,7 @@ public class ExecutorConfig implements AsyncConfigurer, SchedulingConfigurer {
 	@Value("${scheduler.executor.prefix:job-scheduler-}")
 	private String schedulerPrefix;
 
+/*
 	@Override
 	@Bean(name = ASYNC_EXECUTOR, destroyMethod = "shutdown")
 	public ExecutorService getAsyncExecutor() {
@@ -47,6 +48,7 @@ public class ExecutorConfig implements AsyncConfigurer, SchedulingConfigurer {
 		executor.initialize();
 		return MeliExecutors.trace(executor.getThreadPoolExecutor());
 	}
+*/
 
 	@Override
 	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {

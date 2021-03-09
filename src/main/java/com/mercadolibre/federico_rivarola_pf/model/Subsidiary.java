@@ -20,6 +20,9 @@ public class Subsidiary {
     @Column(name = "country")
     private String country;
 
+    public Subsidiary() {
+    }
+
     public Subsidiary(String id, String accessToken, String name, String address, String phone, String country) {
         this.id = id;
         this.accessToken = accessToken;

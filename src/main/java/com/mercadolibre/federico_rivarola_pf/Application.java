@@ -5,6 +5,8 @@ import com.mercadolibre.federico_rivarola_pf.util.ScopeUtils;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
+import javax.swing.*;
+
 @SpringBootApplication
 public class Application {
 	public static void main(String[] args) {

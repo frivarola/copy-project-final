@@ -17,6 +17,15 @@ public class Stock implements Serializable {
     @Column(name = "quantity")
     private Integer quantity;
 
+    public Stock() {
+    }
+
+    public Stock(Part part, Subsidiary subsidiary, Integer quantity) {
+        this.part = part;
+        this.subsidiary = subsidiary;
+        this.quantity = quantity;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }

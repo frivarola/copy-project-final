@@ -1,6 +1,6 @@
 package com.mercadolibre.federico_rivarola_pf.integration;
 
-import com.mercadolibre.restclient.mock.RequestMockHolder;
+//import com.mercadolibre.restclient.mock.RequestMockHolder;
 import com.mercadolibre.federico_rivarola_pf.Application;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.extension.ExtendWith;

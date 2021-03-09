@@ -293,25 +293,7 @@
                 <artifactId>routing</artifactId>
                 <version>2.2.1</version>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <groupId>com.mercadolibre.restclient</groupId>-->
-            <!--                <artifactId>restclient-core</artifactId>-->
-            <!--                <version>0.3.51</version>-->
-            <!--                <scope>test</scope>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.mercadolibre.restclient</groupId>-->
-            <!--                <artifactId>restclient-http</artifactId>-->
-            <!--                <version>0.3.51</version>-->
-            <!--                <scope>test</scope>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.mercadolibre.restclient</groupId>-->
-            <!--                <artifactId>restclient-core</artifactId>-->
-            <!--                <version>0.3.51</version>-->
-            <!--                <scope>test</scope>-->
-            <!--                <classifier>tests</classifier>-->
-            <!--            </dependency>-->
+
         </dependencies>
     </dependencyManagement>
 
@@ -347,18 +329,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.mercadolibre.restclient</groupId>-->
-        <!--            <artifactId>restclient-core</artifactId>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.mercadolibre.restclient</groupId>-->
-        <!--            <artifactId>restclient-core</artifactId>-->
-        <!--            <scope>test</scope>-->
-        <!--            <classifier>tests</classifier>-->
-        <!--        </dependency>-->
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -447,12 +417,10 @@
         <dependency>
             <groupId>com.mercadolibre</groupId>
             <artifactId>threading</artifactId>
-            <version>0.1.4</version>
         </dependency>
         <dependency>
             <groupId>com.mercadolibre</groupId>
             <artifactId>routing</artifactId>
-            <version>2.2.1</version>
         </dependency>
     </dependencies>
 </project>

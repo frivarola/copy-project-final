@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PartRecordManagementService implements IPartRecordManagementService {
-    IPartsRecordRepository partsRecordRepository;
+    private final IPartsRecordRepository partsRecordRepository;
 
     public PartRecordManagementService(IPartsRecordRepository partsRecordRepository) {
         this.partsRecordRepository = partsRecordRepository;

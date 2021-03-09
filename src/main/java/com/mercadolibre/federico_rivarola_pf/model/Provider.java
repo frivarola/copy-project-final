@@ -18,6 +18,9 @@ public class Provider {
     @Column(name = "country")
     private String country;
 
+    public Provider() {
+    }
+
     public Provider(String id, String name, String address, String phone, String country) {
         this.id = id;
         this.name = name;
