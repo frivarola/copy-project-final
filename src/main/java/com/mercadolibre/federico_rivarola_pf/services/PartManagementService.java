@@ -2,7 +2,7 @@ package com.mercadolibre.federico_rivarola_pf.services;
 
 import com.mercadolibre.federico_rivarola_pf.dtos.PartDTO;
 import com.mercadolibre.federico_rivarola_pf.model.Part;
-import com.mercadolibre.federico_rivarola_pf.repositories.interfaces.IPartsRepository;
+import com.mercadolibre.federico_rivarola_pf.repositories.IPartsRepository;
 import com.mercadolibre.federico_rivarola_pf.services.interfaces.IPartManagementService;
 import com.mercadolibre.federico_rivarola_pf.util.enums.OrderType;
 import com.mercadolibre.federico_rivarola_pf.util.enums.Querytype;

@@ -1,8 +1,7 @@
 package com.mercadolibre.federico_rivarola_pf.services;
 
-import com.mercadolibre.federico_rivarola_pf.model.Part;
 import com.mercadolibre.federico_rivarola_pf.model.PartRecord;
-import com.mercadolibre.federico_rivarola_pf.repositories.interfaces.IPartsRecordRepository;
+import com.mercadolibre.federico_rivarola_pf.repositories.IPartsRecordRepository;
 import com.mercadolibre.federico_rivarola_pf.services.interfaces.IPartRecordManagementService;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.mercadolibre.federico_rivarola_pf.repositories.interfaces;
+package com.mercadolibre.federico_rivarola_pf.repositories;
 
 import com.mercadolibre.federico_rivarola_pf.dtos.PartDTO;
 import com.mercadolibre.federico_rivarola_pf.model.Part;

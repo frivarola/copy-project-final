@@ -1,4 +1,4 @@
-package com.mercadolibre.federico_rivarola_pf.repositories.interfaces;
+package com.mercadolibre.federico_rivarola_pf.repositories;
 
 import com.mercadolibre.federico_rivarola_pf.model.PartRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
