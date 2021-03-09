@@ -417,17 +417,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.mercadolibre</groupId>
-            <artifactId>threading</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mercadolibre</groupId>
-            <artifactId>routing</artifactId>
-        </dependency>
-
-
-        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
@@ -459,6 +448,11 @@
             <groupId>com.mercadolibre</groupId>
             <artifactId>threading</artifactId>
             <version>0.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mercadolibre</groupId>
+            <artifactId>routing</artifactId>
+            <version>2.2.1</version>
         </dependency>
     </dependencies>
 </project>
