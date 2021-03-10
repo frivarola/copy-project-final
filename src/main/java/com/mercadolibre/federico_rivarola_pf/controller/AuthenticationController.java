@@ -1,9 +1,11 @@
 package com.mercadolibre.federico_rivarola_pf.controller;
 
 import com.mercadolibre.federico_rivarola_pf.dtos.UserDTO;
+import com.mercadolibre.federico_rivarola_pf.services.UserService;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,36 +19,24 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(path="/api/v1/user")
 public class AuthenticationController {
+    private final UserService userService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public AuthenticationController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @PostMapping("/login")
     public UserDTO login(@RequestParam("user") String username, @RequestParam("password") String pwd){
-        String token = getJWTToken(username);
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(username);
-        userDTO.setToken(token);
-
-        return userDTO;
+        return userService.authUser(username, bCryptPasswordEncoder.encode(pwd));
     }
 
-    private String getJWTToken(String username) {
-        String secretKey = "mySecretKey";
-        List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-                .commaSeparatedStringToAuthorityList("ROLE_USER");
-
-        String token = Jwts
-                .builder()
-                .setId("frivarolaJWT")
-                .setSubject(username)
-                .claim("authorities",
-                        grantedAuthorities.stream()
-                                .map(GrantedAuthority::getAuthority)
-                                .collect(Collectors.toList()))
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 600000))
-                .signWith(SignatureAlgorithm.HS512,
-                        secretKey.getBytes()).compact();
-
-        return "Bearer " + token;
+    @PostMapping("/create")
+    public UserDTO create(@RequestParam("user") String username, @RequestParam("password") String pwd){
+        return userService.authUser(username, bCryptPasswordEncoder.encode(pwd));
     }
+
+
 
 }
