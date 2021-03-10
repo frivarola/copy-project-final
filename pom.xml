@@ -298,6 +298,16 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
         <!-- test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -421,6 +431,11 @@
         <dependency>
             <groupId>com.mercadolibre</groupId>
             <artifactId>routing</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>5.4.2</version>
         </dependency>
     </dependencies>
 </project>
