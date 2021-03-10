@@ -19,6 +19,8 @@ public class Subsidiary {
     private String phone;
     @Column(name = "country")
     private String country;
+    @OneToOne(mappedBy = "subsidiary")
+    private User user;
 
     public Subsidiary() {
     }
@@ -78,5 +80,13 @@ public class Subsidiary {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

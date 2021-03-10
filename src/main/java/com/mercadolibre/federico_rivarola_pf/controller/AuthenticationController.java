@@ -5,6 +5,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import io.jsonwebtoken.Jwts;
@@ -14,9 +15,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping(path="/api/v1/user")
 public class AuthenticationController {
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public UserDTO login(@RequestParam("user") String username, @RequestParam("password") String pwd){
         String token = getJWTToken(username);
         UserDTO userDTO = new UserDTO();
