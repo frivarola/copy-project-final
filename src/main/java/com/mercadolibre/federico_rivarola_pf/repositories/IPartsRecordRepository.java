@@ -16,7 +16,7 @@ public interface IPartsRecordRepository extends CrudRepository<PartRecord, Integ
     List<PartRecord> findAll();
     @Query("SELECT pr FROM PartRecord pr JOIN Part p ON pr.part = p WHERE p.id = :idPart")
     List<PartRecord> findByIdPart(@Param("idPart") String idPart);
-    @Query("SELECT pr FROM PartRecord pr WHERE date(to_date(pr.lastModification),'YYYY-MM-DD') >= date")
+    @Query("SELECT pr FROM PartRecord pr WHERE to_date(pr.lastModification, 'yyyy-MM-dd') >= :date")
     List<PartRecord> findByLastModification(@Param("date") LocalDate date);
 
 }
