@@ -31,7 +31,8 @@ meli:
 
 server:
   error:
-  include-message: alwaysgit
+    include-message: always
+    include-binding-errors: always
   compression:
     enabled: true # Whether response compression is enabled.
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json # Comma-separated list of MIME types that should be compressed.

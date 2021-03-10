@@ -14,3 +14,6 @@ meli:
       name: deluxedb
       username: deluxedb_RPROD
       password: DB_MYSQL_DESAENV03_DELUXEDB_DELUXEDB_RPROD
+server:
+  error:
+    include-message: always
