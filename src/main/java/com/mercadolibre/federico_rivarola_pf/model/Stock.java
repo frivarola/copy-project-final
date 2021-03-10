@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "stock")
+@IdClass(StockCompositeID.class)
 public class Stock implements Serializable {
     @Id
     @ManyToOne()
