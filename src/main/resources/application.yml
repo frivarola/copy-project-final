@@ -30,6 +30,8 @@ meli:
       password: DB_MYSQL_DESAENV03_DELUXEDB_DELUXEDB_RPROD
 
 server:
+  error:
+  include-message: alwaysgit
   compression:
     enabled: true # Whether response compression is enabled.
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json # Comma-separated list of MIME types that should be compressed.
