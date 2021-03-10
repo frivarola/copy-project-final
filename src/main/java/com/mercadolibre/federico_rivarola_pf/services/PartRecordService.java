@@ -2,15 +2,15 @@ package com.mercadolibre.federico_rivarola_pf.services;
 
 import com.mercadolibre.federico_rivarola_pf.model.PartRecord;
 import com.mercadolibre.federico_rivarola_pf.repositories.IPartsRecordRepository;
-import com.mercadolibre.federico_rivarola_pf.services.interfaces.IPartRecordManagementService;
+import com.mercadolibre.federico_rivarola_pf.services.interfaces.IPartRecordService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartRecordManagementService implements IPartRecordManagementService {
+public class PartRecordService implements IPartRecordService {
     private final IPartsRecordRepository partsRecordRepository;
 
-    public PartRecordManagementService(IPartsRecordRepository partsRecordRepository) {
+    public PartRecordService(IPartsRecordRepository partsRecordRepository) {
         this.partsRecordRepository = partsRecordRepository;
     }
 
