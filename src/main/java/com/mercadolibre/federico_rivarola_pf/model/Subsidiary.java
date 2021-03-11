@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table(name = "subsidiary")
 public class Subsidiary {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_subsidiary")
     private String id;
     @Column(name = "accessToken")

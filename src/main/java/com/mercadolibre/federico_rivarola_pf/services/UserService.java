@@ -9,6 +9,7 @@ import com.mercadolibre.federico_rivarola_pf.services.interfaces.IUserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 /**
  * Service for user management
+ *
  * @author frivarola
  */
 @Service
@@ -35,26 +37,31 @@ public class UserService implements IUserService {
 
     /**
      * method for create user
+     *
      * @param username
      * @param pwd
+     * @return
      * @throws ResponseStatusException
      */
     @Override
-    public void createUser(String username, String pwd, String idSubsidiary) throws ResponseStatusException {
+    public ResponseEntity createUser(String username, String pwd, String idSubsidiary) throws ResponseStatusException {
         User u = new User();
         u.setUsername(username);
         u.setPassword(pwd);
         u.setSubsidiary(subsidiaryRepository.findById(idSubsidiary));
-        if(u.getSubsidiary() != null){
-            userRepository.save(u);
-        }
 
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid subsidiary");
+        if (u.getSubsidiary() != null) {
+            userRepository.save(u);
+            return new ResponseEntity<>("Se creo el usuario con exito.", HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid subsidiary");
+        }
 
     }
 
     /**
      * method for authenticate user
+     *
      * @param username
      * @param pwd
      * @return UserDTO with JWToken
@@ -127,6 +134,7 @@ public class UserService implements IUserService {
 
     /**
      * method for create JWTToken
+     *
      * @param username
      * @return
      */

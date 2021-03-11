@@ -36,7 +36,7 @@ public class Application {
 					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 					.authorizeRequests()
 					.antMatchers(HttpMethod.POST, "/api/v1/user/**").permitAll()
-					.antMatchers(HttpMethod.POST, "/h2").permitAll()
+					.antMatchers("/h2/**").permitAll()
 					.anyRequest().authenticated();
 		}
 

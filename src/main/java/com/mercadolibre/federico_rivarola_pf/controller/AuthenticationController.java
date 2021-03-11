@@ -6,6 +6,7 @@ import com.mercadolibre.federico_rivarola_pf.dtos.requests.NewUserDTO;
 import com.mercadolibre.federico_rivarola_pf.services.UserService;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,8 +34,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/create")
-    public void create(@RequestBody NewUserDTO newUser){
-        userService.createUser(newUser.getUser(), bCryptPasswordEncoder.encode(newUser.getPassword()), newUser.getIdSubsidiary());
+    public ResponseEntity create(@RequestBody NewUserDTO newUser){
+        return userService.createUser(newUser.getUser(), bCryptPasswordEncoder.encode(newUser.getPassword()), newUser.getIdSubsidiary());
     }
 
 
