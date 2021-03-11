@@ -34,4 +34,20 @@ public class Stock implements Serializable {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    public Part getPart() {
+        return part;
+    }
+
+    public void setPart(Part part) {
+        this.part = part;
+    }
+
+    public Subsidiary getSubsidiary() {
+        return subsidiary;
+    }
+
+    public void setSubsidiary(Subsidiary subsidiary) {
+        this.subsidiary = subsidiary;
+    }
 }

@@ -27,9 +27,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * service for Part management.
+ *
  * @author frivarola
  */
 @Service
@@ -50,18 +52,35 @@ public class PartManagementService implements IPartManagementService {
 
     /**
      * Function to get all parts records by subsidiary
+     *
      * @return
      * @throws ResponseStatusException
      */
     @Override
     public QueryPartsDTO getAll() throws ResponseStatusException {
         List<QueryPartUnitDTO> result = new ArrayList<>();
-        List<PartRecord> records = partsRecordRepository.findAll();
+        String subsidiary = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Stock> ss = stockRepository.findByIdSubsidiary(subsidiary);
 
-        result = makeListQueryPartUnitDTO(records);
+        if (ss != null || !ss.isEmpty()) {
 
-        if (result.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+            List<String> idsParts = ss.stream().map(s -> s.getPart().getId()).collect(Collectors.toList());
+            List<PartRecord> records = partsRecordRepository.findByListIdParts(idsParts);
+
+            if (records != null || !records.isEmpty()) {
+                result = makeListQueryPartUnitDTO(records);
+
+                if (result.isEmpty()) {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                }
+
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay registros para las partes asignadas al stock de " + subsidiary);
+            }
+
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay stock para la subsidiaria " + subsidiary);
         }
 
         return new QueryPartsDTO(result);
@@ -75,6 +94,7 @@ public class PartManagementService implements IPartManagementService {
 
     /**
      * Function to get all part records since date
+     *
      * @param queryType
      * @param date
      * @return
@@ -83,9 +103,9 @@ public class PartManagementService implements IPartManagementService {
     @Override
     public QueryPartsDTO getAllByQueryTypeAndDate(Querytype queryType, String date) throws ResponseStatusException {
 
-        if(queryType.equals(Querytype.C)){
+        if (queryType.equals(Querytype.C)) {
             return getAll();
-        }else if(queryType.equals(Querytype.V) || queryType.equals(Querytype.P)){
+        } else if (queryType.equals(Querytype.V) || queryType.equals(Querytype.P)) {
 
             List<QueryPartUnitDTO> result = new ArrayList<>();
             LocalDate lDate = null;
@@ -96,10 +116,28 @@ public class PartManagementService implements IPartManagementService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El formato de la fecha es incorrecto, debe ser YYYY-MM-DD");
             }
 
-            result = makeListQueryPartUnitDTO(partsRecordRepository.findByLastModification(lDate));
+            String subsidiary = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            List<Stock> ss = stockRepository.findByIdSubsidiary(subsidiary);
 
-            if (result.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            if (ss != null || !ss.isEmpty()) {
+
+
+                List<String> idsParts = ss.stream().map(s -> s.getPart().getId()).collect(Collectors.toList());
+                List<PartRecord> records = partsRecordRepository.findByLastModificationAndIdsParts(lDate, idsParts);
+
+                if (records != null || !records.isEmpty()) {
+                    result = makeListQueryPartUnitDTO(records);
+
+                    if (result.isEmpty()) {
+                        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                    }
+
+                } else {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay registros para las partes asignadas al stock de " + subsidiary);
+                }
+
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay stock para la subsidiaria " + subsidiary);
             }
 
             return new QueryPartsDTO(result);
@@ -114,15 +152,14 @@ public class PartManagementService implements IPartManagementService {
 
     /**
      * Function for create List<QueryPartUnitDTO> from List<PartRecord>
+     *
      * @param records
      * @return
      */
     private List<QueryPartUnitDTO> makeListQueryPartUnitDTO(List<PartRecord> records) {
         List<QueryPartUnitDTO> result = new ArrayList<>();
-        String subsidiary = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         for (PartRecord pr : records) {
-            Stock s = stockRepository.findByIdPartAndIdSubsidiary(pr.getPart().getId(), subsidiary);
             Provider provider = providerRepository.findById(pr.getPart().getIdProvider().getId());
 
             QueryPartUnitDTO u = objectMapper.convertValue(pr.getPart(), QueryPartUnitDTO.class);
