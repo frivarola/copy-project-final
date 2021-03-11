@@ -1,15 +1,15 @@
 package com.mercadolibre.federico_rivarola_pf.controller;
 
 import com.mercadolibre.federico_rivarola_pf.dtos.UserDTO;
+import com.mercadolibre.federico_rivarola_pf.dtos.requests.CredentialsDTO;
+import com.mercadolibre.federico_rivarola_pf.dtos.requests.NewUserDTO;
 import com.mercadolibre.federico_rivarola_pf.services.UserService;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import io.jsonwebtoken.Jwts;
 
 import java.util.Date;
@@ -28,13 +28,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public UserDTO login(@RequestParam("user") String username, @RequestParam("password") String pwd){
-        return userService.authUser(username, bCryptPasswordEncoder.encode(pwd));
+    public UserDTO login(@RequestBody CredentialsDTO credentials){
+        return userService.authUser(credentials.getUsername(), bCryptPasswordEncoder.encode(credentials.getPwd()));
     }
 
     @PostMapping("/create")
-    public UserDTO create(@RequestParam("user") String username, @RequestParam("password") String pwd){
-        return userService.authUser(username, bCryptPasswordEncoder.encode(pwd));
+    public void create(@RequestBody NewUserDTO newUser){
+        userService.createUser(newUser.getUser(), bCryptPasswordEncoder.encode(newUser.getPassword()), newUser.getIdSubsidiary());
     }
 
 
