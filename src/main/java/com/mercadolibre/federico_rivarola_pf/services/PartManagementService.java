@@ -16,6 +16,8 @@ import com.mercadolibre.federico_rivarola_pf.services.interfaces.IPartManagement
 import com.mercadolibre.federico_rivarola_pf.util.enums.OrderType;
 import com.mercadolibre.federico_rivarola_pf.util.enums.Querytype;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -117,9 +119,10 @@ public class PartManagementService implements IPartManagementService {
      */
     private List<QueryPartUnitDTO> makeListQueryPartUnitDTO(List<PartRecord> records) {
         List<QueryPartUnitDTO> result = new ArrayList<>();
+        String subsidiary = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         for (PartRecord pr : records) {
-            Stock s = stockRepository.findByIdPartAndIdSubsidiary(pr.getPart().getId(), "01");
+            Stock s = stockRepository.findByIdPartAndIdSubsidiary(pr.getPart().getId(), subsidiary);
             Provider provider = providerRepository.findById(pr.getPart().getIdProvider().getId());
 
             QueryPartUnitDTO u = objectMapper.convertValue(pr.getPart(), QueryPartUnitDTO.class);

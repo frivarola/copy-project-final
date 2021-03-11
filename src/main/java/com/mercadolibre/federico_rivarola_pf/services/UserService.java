@@ -76,10 +76,16 @@ public class UserService implements IUserService {
         UserDTO userDTO = null;
 
         if (validateCredentials(username, pwd)) {
-            userDTO = new UserDTO();
-            String token = getJWTToken(username);
-            userDTO.setUsername(username);
-            userDTO.setToken(token);
+            Subsidiary s = userRepository.getSubsidiary(username);
+
+            if (s != null) {
+                userDTO = new UserDTO();
+                String token = getJWTToken(username, s.getId());
+                userDTO.setUsername(username);
+                userDTO.setToken(token);
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not have subsidiary.");
+            }
         }
         return userDTO;
     }
@@ -142,15 +148,15 @@ public class UserService implements IUserService {
      * @param username
      * @return
      */
-    private String getJWTToken(String username) {
+    private String getJWTToken(String username, String idSubsidiary) {
         String secretKey = "mySecretKey";
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList("ROLE_USER");
 
         String token = Jwts
                 .builder()
-                .setId("frivarolaJWT")
-                .setSubject(username)
+                .setId(username)
+                .setSubject(idSubsidiary)
                 .claim("authorities",
                         grantedAuthorities.stream()
                                 .map(GrantedAuthority::getAuthority)

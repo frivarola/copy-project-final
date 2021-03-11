@@ -61,7 +61,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         @SuppressWarnings("unchecked")
         List<String> authorities = (List) claims.get("authorities");
 
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null,
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), claims.getId(),
                 authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
         SecurityContextHolder.getContext().setAuthentication(auth);
 
