@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -29,10 +30,13 @@ import java.util.stream.Collectors;
 public class UserService implements IUserService {
     private final IUserRepository userRepository;
     private final ISubsidiaryRepository subsidiaryRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(IUserRepository userRepository, ISubsidiaryRepository subsidiaryRepository) {
+
+    public UserService(IUserRepository userRepository, ISubsidiaryRepository subsidiaryRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.subsidiaryRepository = subsidiaryRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     /**
@@ -124,7 +128,7 @@ public class UserService implements IUserService {
     public Boolean validateCredentials(String username, String password) throws ResponseStatusException {
         User u = userRepository.findUser(username);
         if (u != null) {
-            if (u.getPassword().equals(password)) {
+            if (bCryptPasswordEncoder.matches(password, u.getPassword())) {
                 return true;
             }
         }

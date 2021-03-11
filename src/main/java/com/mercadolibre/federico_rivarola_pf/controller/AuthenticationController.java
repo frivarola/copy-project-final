@@ -30,7 +30,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public UserDTO login(@RequestBody CredentialsDTO credentials){
-        return userService.authUser(credentials.getUsername(), bCryptPasswordEncoder.encode(credentials.getPwd()));
+        return userService.authUser(credentials.getUsername(), credentials.getPwd());
     }
 
     @PostMapping("/create")
