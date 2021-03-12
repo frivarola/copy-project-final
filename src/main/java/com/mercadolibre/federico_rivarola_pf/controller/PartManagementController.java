@@ -32,9 +32,9 @@ public class PartManagementController {
         return partManagementService.getAllByQueryTypeAndDate(querytype, date);
     }
 
-    @GetMapping(path = "/list")
-    QueryPartsDTO getByQuerytypeAndDateSorter(@RequestParam Querytype querytype, @RequestParam String date, @RequestParam OrderType orderType){
-        return partManagementService.getAllByQueryTypeAndDateSorter(querytype, date, orderType);
+    @GetMapping(path = "/list", params = {"querytype", "date", "order"})
+    QueryPartsDTO getByQuerytypeAndDateSorter(@RequestParam Querytype querytype, @RequestParam String date, @RequestParam OrderType order){
+        return partManagementService.getAllByQueryTypeAndDateSorter(querytype, date, order);
     }
 
 }
