@@ -15,6 +15,8 @@ import com.mercadolibre.federico_rivarola_pf.repositories.IStockRepository;
 import com.mercadolibre.federico_rivarola_pf.services.interfaces.IPartManagementService;
 import com.mercadolibre.federico_rivarola_pf.util.enums.OrderType;
 import com.mercadolibre.federico_rivarola_pf.util.enums.Querytype;
+import net.bytebuddy.asm.Advice;
+import org.hibernate.criterion.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +28,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +45,8 @@ public class PartManagementService implements IPartManagementService {
     private final IStockRepository stockRepository;
     private final IProviderRepository providerRepository;
     private final ObjectMapper objectMapper;
+    private final String datePattern = "yyyy-MM-dd";
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
 
     public PartManagementService(IPartsRepository partsRepository, IPartsRecordRepository partsRecordRepository, IStockRepository stockRepository, IProviderRepository providerRepository, ObjectMapper objectMapper) {
         this.partsRepository = partsRepository;
@@ -111,7 +117,7 @@ public class PartManagementService implements IPartManagementService {
             LocalDate lDate = null;
 
             try {
-                lDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                lDate = LocalDate.parse(date, dateFormatter);
             } catch (DateTimeParseException de) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El formato de la fecha es incorrecto, debe ser YYYY-MM-DD");
             }
@@ -146,8 +152,23 @@ public class PartManagementService implements IPartManagementService {
     }
 
     @Override
-    public QueryPartsDTO getAllByQueryTypeAndDateSorter(Querytype queryType, String date, OrderType orderType) {
-        return null;
+    public QueryPartsDTO getAllByQueryTypeAndDateSorter(Querytype queryType, String date, OrderType orderType) throws ResponseStatusException{
+        //OrderType.ASC; codigo de parte ascendente
+        List<QueryPartUnitDTO> result = getAllByQueryTypeAndDate(queryType, date).getParts();
+
+        if(OrderType.ASC.equals(orderType)){
+            Collections.sort(result, Comparator.comparing(QueryPartUnitDTO::getPartCode));
+        }
+        //OrderType.DESC; codigo de parte descendente
+        if(OrderType.DESC.equals(orderType)){
+            Collections.sort(result, (a,b) -> b.getPartCode().compareTo(a.getPartCode()));
+        }
+        //OrderType.FECHA_VARIACION; fecha desc
+        if(OrderType.FECHA_VARIACION.equals(orderType)){
+            Collections.sort(result, Comparator.comparing(a -> LocalDate.parse(a.getLastModification(), dateFormatter)));
+        }
+
+        return new QueryPartsDTO(result);
     }
 
     /**

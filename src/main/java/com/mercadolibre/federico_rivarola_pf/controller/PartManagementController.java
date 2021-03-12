@@ -3,6 +3,7 @@ package com.mercadolibre.federico_rivarola_pf.controller;
 import com.mercadolibre.federico_rivarola_pf.dtos.PartDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.QueryPartsDTO;
 import com.mercadolibre.federico_rivarola_pf.services.PartManagementService;
+import com.mercadolibre.federico_rivarola_pf.util.enums.OrderType;
 import com.mercadolibre.federico_rivarola_pf.util.enums.Querytype;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,11 @@ public class PartManagementController {
     @GetMapping(path = "/list")
     QueryPartsDTO getByQuerytypeAndDate(@RequestParam Querytype querytype, @RequestParam String date){
         return partManagementService.getAllByQueryTypeAndDate(querytype, date);
+    }
+
+    @GetMapping(path = "/list")
+    QueryPartsDTO getByQuerytypeAndDateSorter(@RequestParam Querytype querytype, @RequestParam String date, @RequestParam OrderType orderType){
+        return partManagementService.getAllByQueryTypeAndDateSorter(querytype, date, orderType);
     }
 
 }
