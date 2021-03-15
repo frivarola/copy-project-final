@@ -1,11 +1,25 @@
 package com.mercadolibre.federico_rivarola_pf.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "order_details_cm")
 public class OrderDetailCM {
+    @ManyToOne()
+    @JoinColumn(name = "id_order_cm", nullable = false)
     private OrderCM orderCM;
+    @ManyToOne()
+    @JoinColumn(name = "part_code", nullable = false)
     private Part part;
+    @ManyToOne()
+    @JoinColumn(name = "id_part_status", nullable = false)
     private AccountType account;
+    @ManyToOne()
+    @JoinColumn(name = "id_part_status", nullable = false)
     private PartStatus partStatus;
+    @Column(name="quantity")
     private Integer quantity;
+    @Column(name="reason", length = 100)
     private String reason;
 
     public OrderDetailCM() {
