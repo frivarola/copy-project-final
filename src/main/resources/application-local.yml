@@ -3,10 +3,23 @@
 # Overrides application.yml default properties
 
 spring:
+  datasource:
+    initialization-mode: always
+    data: classpath:/data.sql
+    driver:
+      class: com.mysql.jdbc.Driver
+    url: jdbc:mysql://proxysql.master.meliseginf.com:6612/deluxedb?useSSL=true&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${LOCAL_DB_USER}
+    password: ${LOCAL_DB_PASS}
   jpa:
+    database: mysql
     show-sql: true
     hibernate:
       ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
 meli:
   credential:
     db:
@@ -14,6 +27,7 @@ meli:
       name: deluxedb
       username: deluxedb_RPROD
       password: DB_MYSQL_DESAENV03_DELUXEDB_DELUXEDB_RPROD
+
 server:
   error:
     include-message: always
