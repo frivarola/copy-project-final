@@ -26,7 +26,13 @@ public class PartManagementController {
         return partManagementService.getAll();
     }
 
-    @GetMapping(path = "/list")
+
+    @GetMapping(path = "/list", params = {"querytype"})
+    QueryPartsDTO getByQuerytype(@RequestParam Querytype querytype){
+        return partManagementService.getAllByQueryType(querytype);
+    }
+
+    @GetMapping(path = "/list", params = {"querytype", "date"})
     QueryPartsDTO getByQuerytypeAndDate(@RequestParam Querytype querytype, @RequestParam String date){
         return partManagementService.getAllByQueryTypeAndDate(querytype, date);
     }

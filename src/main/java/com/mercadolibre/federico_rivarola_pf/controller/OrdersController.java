@@ -50,8 +50,4 @@ public class OrdersController {
         return ordersService.getByDealerNumberSorter(dealerNumber, order);
     }
 
-    @PostMapping()
-    public 
-
-
 }

@@ -84,8 +84,12 @@ public class PartManagementService implements IPartManagementService {
 
     @Override
     public QueryPartsDTO getAllByQueryType(Querytype querytype) {
-
-        return null;
+        if(querytype.equals(Querytype.C)){
+            return getAll();
+        } else if (querytype.equals(Querytype.V) || querytype.equals(Querytype.P)) {
+            throw new ApiException("Error", "Field date is required.", HttpStatus.BAD_REQUEST.value());
+        }
+        throw new ApiException("Error", "Bad request", HttpStatus.BAD_REQUEST.value());
     }
 
     /**
