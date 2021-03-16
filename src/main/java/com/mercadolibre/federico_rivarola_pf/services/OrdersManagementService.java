@@ -44,7 +44,7 @@ public class OrdersManagementService implements IOrdersManagementService {
     @Override
     public OrderResponseDTO getByDealerNumber(String dealerNumber) throws ResponseStatusException {
         String subsidiary = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Dealer d = dealerRepository.findDealerByIdSubsidiary(subsidiary);
+        Dealer d = dealerRepository.findDealerByIdSubsidiary(subsidiary, dealerNumber);
 
         if (d != null) {
 
@@ -72,7 +72,7 @@ public class OrdersManagementService implements IOrdersManagementService {
     @Override
     public OrderResponseDTO getByDealerNumberAndDeliveryStatus(String dealerNumber, String deliveryStatus) {
         String subsidiary = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Dealer d = dealerRepository.findDealerByIdSubsidiary(subsidiary);
+        Dealer d = dealerRepository.findDealerByIdSubsidiary(subsidiary, dealerNumber);
 
         if (d != null) {
 

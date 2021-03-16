@@ -4,7 +4,7 @@
 
 spring:
   datasource:
-#    initialization-mode: always
+    initialization-mode: always
     data: classpath:/data.sql
     driver:
       class: com.mysql.jdbc.Driver

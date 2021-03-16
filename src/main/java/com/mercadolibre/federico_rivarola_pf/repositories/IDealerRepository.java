@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IDealerRepository extends CrudRepository<Dealer, Integer> {
-    @Query("SELECT d FROM Dealer d WHERE d.subsidiary.id = :idSubsidiary")
-    Dealer findDealerByIdSubsidiary(@Param("idSubsidiary") String idSubsidiary);
+    @Query("SELECT d FROM Dealer d WHERE d.subsidiary.id = :idSubsidiary AND d.dealerNumber = :dealerNumber")
+    Dealer findDealerByIdSubsidiary(@Param("idSubsidiary") String idSubsidiary, @Param("dealerNumber") String dealerNumber);
 }

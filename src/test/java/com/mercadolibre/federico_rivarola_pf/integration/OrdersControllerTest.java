@@ -49,10 +49,10 @@ public class OrdersControllerTest {
     }
 
     @Test
-    void findWithInvalidDealer_shouldWork() throws Exception {
+    void findWithValidDealer_shouldWork() throws Exception {
         List<OrderCM> orders = new ArrayList<>();
         when(ordersRepository.findByDealerNumber(anyString())).thenReturn(orders);
-        this.mockMvc.perform((get(url + "?dealerNumber=001"))).andDo(print()).andExpect(status().isNotFound());
+        this.mockMvc.perform((get(url + "?dealerNumber=001"))).andDo(print()).andExpect(status().isOk());
     }
 
 

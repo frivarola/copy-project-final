@@ -1,5 +1,6 @@
 package com.mercadolibre.federico_rivarola_pf.controller;
 
+import com.mercadolibre.federico_rivarola_pf.dtos.responses.OrderResponseDTO;
 import com.mercadolibre.federico_rivarola_pf.services.OrdersManagementService;
 import com.mercadolibre.federico_rivarola_pf.util.enums.OrderType;
 import org.springframework.http.HttpStatus;
@@ -20,28 +21,28 @@ public class OrdersController {
     }
 
     @GetMapping(params = {"dealerNumber", "deliveryStatus"})
-    public ResponseEntity getOrder(@RequestParam String dealerNumber, @RequestParam String deliveryStatus){
+    public OrderResponseDTO getOrder(@RequestParam String dealerNumber, @RequestParam String deliveryStatus){
 
-        return new ResponseEntity(HttpStatus.OK);
+        return ordersService.getByDealerNumberAndDeliveryStatus(dealerNumber, deliveryStatus);
     }
 
     @GetMapping(params = {"dealerNumber", "deliveryStatus", "order"})
-    public ResponseEntity getOrder(@RequestParam String dealerNumber,
+    public OrderResponseDTO getOrder(@RequestParam String dealerNumber,
                                    @RequestParam String deliveryStatus, @RequestParam OrderType order){
 
-        return new ResponseEntity(HttpStatus.OK);
+        return ordersService.getByDealerNumberAndDeliveryStatusSorter(dealerNumber, deliveryStatus, order);
     }
 
     @GetMapping(params = {"dealerNumber"})
-    public ResponseEntity getOrder(@RequestParam String dealerNumber){
+    public OrderResponseDTO getOrder(@RequestParam String dealerNumber){
 
-        return new ResponseEntity(HttpStatus.OK);
+        return ordersService.getByDealerNumber(dealerNumber);
     }
 
     @GetMapping(params = {"dealerNumber", "order"})
-    public ResponseEntity getOrder(@RequestParam String dealerNumber,
+    public OrderResponseDTO getOrder(@RequestParam String dealerNumber,
                                    @RequestParam OrderType order){
 
-        return new ResponseEntity(HttpStatus.OK);
+        return ordersService.getByDealerNumberSorter(dealerNumber, order);
     }
 }
