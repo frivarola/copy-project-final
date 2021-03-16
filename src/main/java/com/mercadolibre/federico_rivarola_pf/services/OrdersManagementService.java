@@ -108,11 +108,11 @@ public class OrdersManagementService implements IOrdersManagementService {
         OrderResponseDTO response = getByDealerNumber(dealerNumber);
         List<OrderDTO> orderDTOS = response.getOrders();
         if(OrderType.ASC.ordinal() == orderType){
-            Collections.sort(orderDTOS, Comparator.comparing(o -> LocalDate.parse(o.getOrderDate(), dateFormatter)));
+            orderDTOS.sort(Comparator.comparing(o -> LocalDate.parse(o.getOrderDate(), dateFormatter)));
         }
         //OrderType.DESC; codigo de parte descendente
         if(OrderType.DESC.ordinal() == orderType){
-            Collections.sort(orderDTOS, (a,b) -> LocalDate.parse(b.getOrderDate(), dateFormatter).compareTo(LocalDate.parse(a.getOrderDate(), dateFormatter)));
+            orderDTOS.sort((a, b) -> LocalDate.parse(b.getOrderDate(), dateFormatter).compareTo(LocalDate.parse(a.getOrderDate(), dateFormatter)));
         }
 
         response.setOrders(orderDTOS);

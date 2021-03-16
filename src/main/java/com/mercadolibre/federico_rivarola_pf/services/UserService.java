@@ -50,12 +50,20 @@ public class UserService implements IUserService {
      */
     @Override
     public ResponseEntity createUser(String username, String pwd, String idSubsidiary) throws ApiException {
-        User u = new User();
+
+        User u = userRepository.findUser(username);
+
+        if(u != null){
+            throw new ApiException("Invalid username", "Username is already taken.", HttpStatus.UNAUTHORIZED.value());
+        }
+
+        u = new User();
         u.setUsername(username);
         u.setPassword(pwd);
         u.setSubsidiary(subsidiaryRepository.findById(idSubsidiary));
 
         if (u.getSubsidiary() != null) {
+
             userRepository.save(u);
             return new ResponseEntity<>("Se creo el usuario con exito.", HttpStatus.OK);
         } else {
