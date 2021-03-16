@@ -1,6 +1,7 @@
 package com.mercadolibre.federico_rivarola_pf.services;
 
 import com.mercadolibre.federico_rivarola_pf.dtos.UserDTO;
+import com.mercadolibre.federico_rivarola_pf.exceptions.ApiException;
 import com.mercadolibre.federico_rivarola_pf.model.Subsidiary;
 import com.mercadolibre.federico_rivarola_pf.model.User;
 import com.mercadolibre.federico_rivarola_pf.repositories.ISubsidiaryRepository;
@@ -45,10 +46,10 @@ public class UserService implements IUserService {
      * @param username
      * @param pwd
      * @return
-     * @throws ResponseStatusException
+     * @throws ApiException
      */
     @Override
-    public ResponseEntity createUser(String username, String pwd, String idSubsidiary) throws ResponseStatusException {
+    public ResponseEntity createUser(String username, String pwd, String idSubsidiary) throws ApiException {
         User u = new User();
         u.setUsername(username);
         u.setPassword(pwd);
@@ -58,7 +59,7 @@ public class UserService implements IUserService {
             userRepository.save(u);
             return new ResponseEntity<>("Se creo el usuario con exito.", HttpStatus.OK);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid subsidiary");
+            throw new ApiException("Invalid subsidiary", "Subsidiary not exist.", HttpStatus.BAD_REQUEST.value());
         }
 
     }
@@ -69,10 +70,10 @@ public class UserService implements IUserService {
      * @param username
      * @param pwd
      * @return UserDTO with JWToken
-     * @throws ResponseStatusException
+     * @throws ApiException
      */
     @Override
-    public UserDTO authUser(String username, String pwd) throws ResponseStatusException {
+    public UserDTO authUser(String username, String pwd) throws ApiException {
         UserDTO userDTO = null;
 
         if (validateCredentials(username, pwd)) {
@@ -84,7 +85,8 @@ public class UserService implements IUserService {
                 userDTO.setUsername(username);
                 userDTO.setToken(token);
             } else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not have subsidiary.");
+                throw new ApiException("Invalid user", "User does not have subsidiary.", HttpStatus.NOT_FOUND.value());
+
             }
         }
         return userDTO;
@@ -128,10 +130,10 @@ public class UserService implements IUserService {
      * @param username
      * @param password
      * @return
-     * @throws ResponseStatusException
+     * @throws ApiException
      */
     @Override
-    public Boolean validateCredentials(String username, String password) throws ResponseStatusException {
+    public Boolean validateCredentials(String username, String password) throws ApiException {
         User u = userRepository.findUser(username);
         if (u != null) {
             if (bCryptPasswordEncoder.matches(password, u.getPassword())) {
@@ -139,7 +141,7 @@ public class UserService implements IUserService {
             }
         }
         //invalid credentials for pwd incorrect, user not exist, etc..
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+        throw new ApiException("Invalid credentials", "User invalid credentials", HttpStatus.UNAUTHORIZED.value());
     }
 
     /**
