@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class OrdersManagementService implements IOrdersManagementService {
@@ -32,6 +34,7 @@ public class OrdersManagementService implements IOrdersManagementService {
     private final ObjectMapper objectMapper;
     private final String datePattern = "yyyy-MM-dd";
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
+    private final Pattern orderNumberCMPattern = Pattern.compile("\\d{4}-\\d{4}-\\d{8}");
 
     public OrdersManagementService(IOrdersRepository ordersRepository, IDealerRepository dealerRepository, ObjectMapper objectMapper) {
         this.ordersRepository = ordersRepository;
@@ -65,10 +68,10 @@ public class OrdersManagementService implements IOrdersManagementService {
 
                 }
             }
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontraron resultados.");
+            throw new ApiException("Error", "Not found orders", HttpStatus.NOT_FOUND.value());
         }
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe dealer indicado para la consecionaria");
+        throw new ApiException("Error", "Not found dealer indicated for the subsidiary", HttpStatus.NOT_FOUND.value());
 
     }
 
@@ -93,10 +96,10 @@ public class OrdersManagementService implements IOrdersManagementService {
 
                 }
             }
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontraron resultados.");
+            throw new ApiException("Error", "Not found orders", HttpStatus.NOT_FOUND.value());
         }
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe dealer indicado para la consecionaria");
+        throw new ApiException("Error", "Not found dealer indicated for the subsidiary", HttpStatus.NOT_FOUND.value());
 
     }
 
@@ -132,6 +135,30 @@ public class OrdersManagementService implements IOrdersManagementService {
         response.setOrders(orderDTOS);
 
         return response;
+    }
+
+    @Override
+    public OrderDTO getByOrderNumberCM(String orderNumberCM) {
+        Matcher validateRegex = orderNumberCMPattern.matcher(orderNumberCM);
+
+        if(!validateRegex.matches()){
+            throw new ApiException("Error", "Invalid Order Number CM", HttpStatus.BAD_REQUEST.value());
+        }
+
+        OrderCM o = ordersRepository.findByOrderNumberCM(orderNumberCM);
+        if(o != null){
+
+            OrderDTO response = new OrderDTO();
+            response.setOrderNumber(o.getOrderNumberCE());
+            response.setOrderDate(o.getOrderDate());
+            response.setDeliveryStatus(o.getDeliveryStatus().getCode());
+            response.setDaysDelay(o.getDaysDelayed());
+            response.setOrderDetails(convertToListOrderDetailDTO(o.getOrderDetails()));
+
+            return response;
+        }
+
+        throw new ApiException("Error", "Not found orders", HttpStatus.NOT_FOUND.value());
     }
 
     private List<OrderDTO> convertToListOrderDTO(List<OrderCM> orders) {

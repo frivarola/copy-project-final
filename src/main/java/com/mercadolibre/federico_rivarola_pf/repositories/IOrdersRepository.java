@@ -14,4 +14,6 @@ public interface IOrdersRepository extends CrudRepository<OrderCM, Integer> {
     List<OrderCM> findByDealerNumber(@Param("dealerNumber") String dealerNumber);
     @Query("SELECT o FROM OrderCM o WHERE o.dealer.dealerNumber = :dealerNumber AND o.deliveryStatus.code = :deliveryStatus")
     List<OrderCM> findByDealerNumberAndDeliveryStatus(@Param("dealerNumber") String dealerNumber, @Param("deliveryStatus") String deliveryStatus);
+    @Query("SELECT o FROM OrderCM o WHERE o.orderNumberCM = :orderNumberCM")
+    OrderCM findByOrderNumberCM(@Param("orderNumberCM") String orderNumberCM);
 }

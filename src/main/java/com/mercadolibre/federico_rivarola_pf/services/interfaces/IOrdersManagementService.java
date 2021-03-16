@@ -1,5 +1,6 @@
 package com.mercadolibre.federico_rivarola_pf.services.interfaces;
 
+import com.mercadolibre.federico_rivarola_pf.dtos.OrderDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.OrderResponseDTO;
 import com.mercadolibre.federico_rivarola_pf.model.OrderCM;
 import com.mercadolibre.federico_rivarola_pf.util.enums.OrderType;
@@ -14,5 +15,6 @@ public interface IOrdersManagementService {
     OrderResponseDTO getByDealerNumberAndDeliveryStatus(String dealerNumber, String deliveryStatus);
     OrderResponseDTO getByDealerNumberSorter(String dealerNumber, Integer orderType);
     OrderResponseDTO getByDealerNumberAndDeliveryStatusSorter(String dealerNumber, String deliveryStatus, Integer orderType);
+    OrderDTO getByOrderNumberCM(String orderNumberCM);
 
 }

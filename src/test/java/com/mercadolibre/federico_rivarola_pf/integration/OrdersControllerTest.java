@@ -105,4 +105,18 @@ public class OrdersControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void shouldFailOnInvalidNumberTest() throws Exception {
+        this.mockMvc.perform(get("/api/v1/parts/orders/0001-123123")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldWorkOnValidNumberTest() throws Exception {
+        this.mockMvc.perform(get("/api/v1/parts/orders/0001-0001-00000001")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
 }
