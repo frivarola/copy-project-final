@@ -3,6 +3,7 @@ package com.mercadolibre.federico_rivarola_pf.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.QueryPartUnitDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.QueryPartsDTO;
+import com.mercadolibre.federico_rivarola_pf.exceptions.ApiException;
 import com.mercadolibre.federico_rivarola_pf.model.PartRecord;
 import com.mercadolibre.federico_rivarola_pf.model.Provider;
 import com.mercadolibre.federico_rivarola_pf.model.Stock;
@@ -51,10 +52,10 @@ public class PartManagementService implements IPartManagementService {
      * Function to get all parts records by subsidiary
      *
      * @return
-     * @throws ResponseStatusException
+     * @throws ApiException
      */
     @Override
-    public QueryPartsDTO getAll() throws ResponseStatusException {
+    public QueryPartsDTO getAll() throws ApiException {
         List<QueryPartUnitDTO> result = new ArrayList<>();
         String subsidiary = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Stock> ss = stockRepository.findByIdSubsidiary(subsidiary);
@@ -69,15 +70,15 @@ public class PartManagementService implements IPartManagementService {
                 result = makeListQueryPartUnitDTO(records);
 
                 if (result.isEmpty()) {
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                    throw new ApiException("Not found", "Result is empty", HttpStatus.NOT_FOUND.value());
                 }
 
             } else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay registros para las partes asignadas al stock de " + subsidiary);
+                throw new ApiException("Not found", "There are no records for the parts assigned to the stock of ".concat(subsidiary), HttpStatus.NOT_FOUND.value());
             }
 
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay stock para la subsidiaria " + subsidiary);
+            throw new ApiException("Not found", "Not found stock to the subsidiary ".concat(subsidiary), HttpStatus.NOT_FOUND.value());
         }
 
         return new QueryPartsDTO(result);
@@ -95,10 +96,10 @@ public class PartManagementService implements IPartManagementService {
      * @param queryType
      * @param date
      * @return
-     * @throws ResponseStatusException
+     * @throws ApiException
      */
     @Override
-    public QueryPartsDTO getAllByQueryTypeAndDate(Querytype queryType, String date) throws ResponseStatusException {
+    public QueryPartsDTO getAllByQueryTypeAndDate(Querytype queryType, String date) throws ApiException {
 
         if (queryType.equals(Querytype.C)) {
             return getAll();
@@ -110,7 +111,8 @@ public class PartManagementService implements IPartManagementService {
             try {
                 lDate = LocalDate.parse(date, dateFormatter);
             } catch (DateTimeParseException de) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El formato de la fecha es incorrecto, debe ser YYYY-MM-DD");
+
+                throw new ApiException("Invalid format date", "date format is wrong, it must be YYYY-MM-DD", HttpStatus.BAD_REQUEST.value());
             }
 
             String subsidiary = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -126,24 +128,25 @@ public class PartManagementService implements IPartManagementService {
                     result = makeListQueryPartUnitDTO(records);
 
                     if (result.isEmpty()) {
-                        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                        throw new ApiException("Not found", "Result is empty", HttpStatus.NOT_FOUND.value());
                     }
 
                 } else {
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay registros para las partes asignadas al stock de " + subsidiary);
+                    throw new ApiException("Not found", "There are no records for the parts assigned to the stock of ".concat(subsidiary), HttpStatus.NOT_FOUND.value());
                 }
 
             } else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay stock para la subsidiaria " + subsidiary);
+                throw new ApiException("Not found", "Not found stock to the subsidiary ".concat(subsidiary), HttpStatus.NOT_FOUND.value());
             }
 
             return new QueryPartsDTO(result);
         }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid querytype");
+        
+        throw new ApiException("Error", "Invalid querytype", HttpStatus.BAD_REQUEST.value());
     }
 
     @Override
-    public QueryPartsDTO getAllByQueryTypeAndDateSorter(Querytype queryType, String date, OrderType orderType) throws ResponseStatusException{
+    public QueryPartsDTO getAllByQueryTypeAndDateSorter(Querytype queryType, String date, OrderType orderType) throws ApiException{
         //OrderType.ASC; codigo de parte ascendente
         List<QueryPartUnitDTO> result = getAllByQueryTypeAndDate(queryType, date).getParts();
 
