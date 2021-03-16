@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface IOrdersRepository extends CrudRepository<OrderCM, Integer> {
-    @Query("SELECT o FROM OrderCM o WHERE o.dealer.dealerNumber = :dealerNumber ")
+    @Query("SELECT o FROM OrderCM o JOIN OrderDetailCM d ON o.idOrderCM = d.orderCM.idOrderCM WHERE o.dealer.dealerNumber = :dealerNumber ")
     List<OrderCM> findByDealerNumber(@Param("dealerNumber") String dealerNumber);
     @Query("SELECT o FROM OrderCM o WHERE o.dealer.dealerNumber = :dealerNumber AND o.deliveryStatus.code = :deliveryStatus")
     List<OrderCM> findByDealerNumberAndDeliveryStatus(@Param("dealerNumber") String dealerNumber, @Param("deliveryStatus") String deliveryStatus);
