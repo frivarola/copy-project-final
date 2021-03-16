@@ -3,17 +3,23 @@ package com.mercadolibre.federico_rivarola_pf.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.federico_rivarola_pf.dtos.OrderDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.OrderResponseDTO;
+import com.mercadolibre.federico_rivarola_pf.dtos.responses.QueryPartUnitDTO;
 import com.mercadolibre.federico_rivarola_pf.model.Dealer;
 import com.mercadolibre.federico_rivarola_pf.model.OrderCM;
 import com.mercadolibre.federico_rivarola_pf.repositories.IDealerRepository;
 import com.mercadolibre.federico_rivarola_pf.repositories.IOrdersRepository;
 import com.mercadolibre.federico_rivarola_pf.services.interfaces.IOrdersManagementService;
+import com.mercadolibre.federico_rivarola_pf.util.enums.OrderType;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -21,6 +27,8 @@ public class OrdersManagementService implements IOrdersManagementService {
     private final IOrdersRepository ordersRepository;
     private final IDealerRepository dealerRepository;
     private final ObjectMapper objectMapper;
+    private final String datePattern = "yyyy-MM-dd";
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
 
     public OrdersManagementService(IOrdersRepository ordersRepository, IDealerRepository dealerRepository, ObjectMapper objectMapper) {
         this.ordersRepository = ordersRepository;
@@ -87,6 +95,40 @@ public class OrdersManagementService implements IOrdersManagementService {
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe dealer indicado para la consecionaria");
 
+    }
+
+    @Override
+    public OrderResponseDTO getByDealerNumberSorter(String dealerNumber, OrderType orderType) throws ResponseStatusException{
+        OrderResponseDTO response = getByDealerNumber(dealerNumber);
+        List<OrderDTO> orderDTOS = response.getOrders();
+        if(OrderType.ASC.equals(orderType)){
+            Collections.sort(orderDTOS, Comparator.comparing(o -> LocalDate.parse(o.getOrderDate(), dateFormatter)));
+        }
+        //OrderType.DESC; codigo de parte descendente
+        if(OrderType.DESC.equals(orderType)){
+            Collections.sort(orderDTOS, (a,b) -> LocalDate.parse(b.getOrderDate(), dateFormatter).compareTo(LocalDate.parse(a.getOrderDate(), dateFormatter)));
+        }
+
+        response.setOrders(orderDTOS);
+
+        return response;
+    }
+
+    @Override
+    public OrderResponseDTO getByDealerNumberAndDeliveryStatusSorter(String dealerNumber, String deliveryStatus, OrderType orderType) throws ResponseStatusException {
+        OrderResponseDTO response = getByDealerNumberAndDeliveryStatus(dealerNumber, deliveryStatus);
+        List<OrderDTO> orderDTOS = response.getOrders();
+        if(OrderType.ASC.equals(orderType)){
+            Collections.sort(orderDTOS, Comparator.comparing(o -> LocalDate.parse(o.getOrderDate(), dateFormatter)));
+        }
+        //OrderType.DESC; codigo de parte descendente
+        if(OrderType.DESC.equals(orderType)){
+            Collections.sort(orderDTOS, (a,b) -> LocalDate.parse(b.getOrderDate(), dateFormatter).compareTo(LocalDate.parse(a.getOrderDate(), dateFormatter)));
+        }
+
+        response.setOrders(orderDTOS);
+
+        return response;
     }
 
     private List<OrderDTO> convertToListOrderDTO(List<OrderCM> orders) {
