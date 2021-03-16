@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IProviderRepository extends CrudRepository<Provider, Integer> {
@@ -14,5 +15,5 @@ public interface IProviderRepository extends CrudRepository<Provider, Integer> {
     @Query("SELECT p FROM Provider p")
     List<Provider> findAll();
     @Query("SELECT p FROM Provider p where p.id = :idProvider")
-    Provider findById(@Param("idProvider") String idProvider);
+    Optional<Provider> findById(@Param("idProvider") Integer idProvider);
 }
