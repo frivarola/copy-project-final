@@ -188,4 +188,13 @@ public class PartManagementService implements IPartManagementService {
 
         return result;
     }
+
+    /**
+     * Function for save stock of subsidiary
+     * @param idPart, quantity
+     * @return
+     */
+    public Boolean saveStock(String idPart, Integer quantity){
+
+    }
 }
