@@ -13,4 +13,5 @@ public interface IPartManagementService {
     QueryPartsDTO getAllByQueryType(Querytype querytype);
     QueryPartsDTO getAllByQueryTypeAndDate(Querytype queryType, String date);
     QueryPartsDTO getAllByQueryTypeAndDateSorter(Querytype queryType, String date,OrderType orderType);
+    Boolean saveStock(String idPart, Integer quantity);
 }
