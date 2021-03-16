@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Dealer extends Company{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name="dealer_number", length = 15)
+    @Column(name="dealer_number", length = 4)
     private String dealerNumber;
     @ManyToOne
     @JoinColumn(name="subsidiary_id")
