@@ -148,19 +148,19 @@ public class PartManagementService implements IPartManagementService {
     }
 
     @Override
-    public QueryPartsDTO getAllByQueryTypeAndDateSorter(Querytype queryType, String date, OrderType orderType) throws ApiException{
+    public QueryPartsDTO getAllByQueryTypeAndDateSorter(Querytype queryType, String date, Integer orderType) throws ApiException{
         //OrderType.ASC; codigo de parte ascendente
         List<QueryPartUnitDTO> result = getAllByQueryTypeAndDate(queryType, date).getParts();
 
-        if(OrderType.ASC.equals(orderType)){
+        if(OrderType.ASC.ordinal() == orderType){
             Collections.sort(result, Comparator.comparing(QueryPartUnitDTO::getPartCode));
         }
         //OrderType.DESC; codigo de parte descendente
-        if(OrderType.DESC.equals(orderType)){
+        if(OrderType.DESC.ordinal() == orderType){
             Collections.sort(result, (a,b) -> b.getPartCode().compareTo(a.getPartCode()));
         }
         //OrderType.FECHA_VARIACION; fecha desc
-        if(OrderType.FECHA_VARIACION.equals(orderType)){
+        if(OrderType.FECHA_VARIACION.ordinal() == orderType){
             Collections.sort(result, Comparator.comparing(a -> LocalDate.parse(a.getLastModification(), dateFormatter)));
         }
 

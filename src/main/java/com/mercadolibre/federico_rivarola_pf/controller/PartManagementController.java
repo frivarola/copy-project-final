@@ -38,7 +38,7 @@ public class PartManagementController {
     }
 
     @GetMapping(path = "/list", params = {"querytype", "date", "order"})
-    QueryPartsDTO getByQuerytypeAndDateSorter(@RequestParam Querytype querytype, @RequestParam String date, @RequestParam OrderType order){
+    QueryPartsDTO getByQuerytypeAndDateSorter(@RequestParam Querytype querytype, @RequestParam String date, @RequestParam Integer order){
         return partManagementService.getAllByQueryTypeAndDateSorter(querytype, date, order);
     }
 
