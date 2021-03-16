@@ -16,5 +16,5 @@ public interface IPartsRepository extends CrudRepository<Part, Integer> {
     @Query("SELECT p FROM Part p")
     List<Part> findAll();
     @Query("SELECT p FROM Part p WHERE p.id = :idPart")
-    List<Part> findByIdPart(@Param("idPart") String idPart);
+    Part findByIdPart(@Param("idPart") String idPart);
 }

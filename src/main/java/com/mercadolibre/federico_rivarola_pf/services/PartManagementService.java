@@ -1,23 +1,19 @@
 package com.mercadolibre.federico_rivarola_pf.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mercadolibre.federico_rivarola_pf.dtos.requests.NewStockDTO;
+import com.mercadolibre.federico_rivarola_pf.dtos.responses.NewStockResponseDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.QueryPartUnitDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.QueryPartsDTO;
 import com.mercadolibre.federico_rivarola_pf.exceptions.ApiException;
-import com.mercadolibre.federico_rivarola_pf.model.PartRecord;
-import com.mercadolibre.federico_rivarola_pf.model.Provider;
-import com.mercadolibre.federico_rivarola_pf.model.Stock;
-import com.mercadolibre.federico_rivarola_pf.repositories.IPartsRecordRepository;
-import com.mercadolibre.federico_rivarola_pf.repositories.IPartsRepository;
-import com.mercadolibre.federico_rivarola_pf.repositories.IProviderRepository;
-import com.mercadolibre.federico_rivarola_pf.repositories.IStockRepository;
+import com.mercadolibre.federico_rivarola_pf.model.*;
+import com.mercadolibre.federico_rivarola_pf.repositories.*;
 import com.mercadolibre.federico_rivarola_pf.services.interfaces.IPartManagementService;
 import com.mercadolibre.federico_rivarola_pf.util.enums.OrderType;
 import com.mercadolibre.federico_rivarola_pf.util.enums.Querytype;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -36,15 +32,17 @@ public class PartManagementService implements IPartManagementService {
     private final IPartsRecordRepository partsRecordRepository;
     private final IStockRepository stockRepository;
     private final IProviderRepository providerRepository;
+    private final ISubsidiaryRepository subsidiaryRepository;
     private final ObjectMapper objectMapper;
     private final String datePattern = "yyyy-MM-dd";
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
 
-    public PartManagementService(IPartsRepository partsRepository, IPartsRecordRepository partsRecordRepository, IStockRepository stockRepository, IProviderRepository providerRepository, ObjectMapper objectMapper) {
+    public PartManagementService(IPartsRepository partsRepository, IPartsRecordRepository partsRecordRepository, IStockRepository stockRepository, IProviderRepository providerRepository, ISubsidiaryRepository subsidiaryRepository, ObjectMapper objectMapper) {
         this.partsRepository = partsRepository;
         this.partsRecordRepository = partsRecordRepository;
         this.stockRepository = stockRepository;
         this.providerRepository = providerRepository;
+        this.subsidiaryRepository = subsidiaryRepository;
         this.objectMapper = objectMapper;
     }
 
@@ -191,10 +189,27 @@ public class PartManagementService implements IPartManagementService {
 
     /**
      * Function for save stock of subsidiary
-     * @param idPart, quantity
-     * @return
+     * @param stockDTO newStock
+     * @return NewStockResponseDTO
      */
-    public Boolean saveStock(String idPart, Integer quantity){
+    public NewStockResponseDTO saveStock(NewStockDTO stockDTO){
+        String subsidiary = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Part p = partsRepository.findByIdPart(stockDTO.getIdPart());
+
+        if(p != null ){
+            Subsidiary s = subsidiaryRepository.findById(subsidiary);
+            Integer quantity = stockDTO.getQuantity();
+            if(quantity != null){
+                if(quantity.compareTo(0) >= 0){
+                    Stock stock = new Stock(p, s, quantity);
+                    stockRepository.save(stock);
+
+                    return new NewStockResponseDTO("201 Created", "Stock has been updated.", "");
+                }
+            }
+            throw new ApiException("Invalid quantity", "Quantity must be equals or greater than 0", HttpStatus.BAD_REQUEST.value());
+        }
+        throw new ApiException("Invalid Part", stockDTO.getIdPart().concat(" not exist"),HttpStatus.NOT_FOUND.value());
 
     }
 }
