@@ -1,7 +1,9 @@
 package com.mercadolibre.federico_rivarola_pf.model;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
+@MappedSuperclass
 public abstract class Company {
 
     private String name;

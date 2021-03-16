@@ -1,7 +1,5 @@
 package com.mercadolibre.federico_rivarola_pf.model;
 
-import org.checkerframework.checker.units.qual.C;
-
 import javax.persistence.*;
 import java.util.List;
 @Entity
@@ -31,12 +29,12 @@ public class OrderCM {
     private Dealer dealer;
     @ManyToOne
     @JoinColumn(name = "id_delivery_status")
-    private DeliveryStatus deliveryStatusr;
+    private DeliveryStatus deliveryStatus;
 
     public OrderCM() {
     }
 
-    public OrderCM(Integer idOrderCM, String orderNumberCM, String orderDate, String orderNumberCE, Integer daysDelayed, Integer serialNumber, String deliveryDate, List<OrderDetailCM> orderDetails, Dealer dealer) {
+    public OrderCM(Integer idOrderCM, String orderNumberCM, String orderDate, String orderNumberCE, Integer daysDelayed, Integer serialNumber, String deliveryDate, List<OrderDetailCM> orderDetails, Dealer dealer, DeliveryStatus deliveryStatus) {
         this.idOrderCM = idOrderCM;
         this.orderNumberCM = orderNumberCM;
         this.orderDate = orderDate;
@@ -46,6 +44,7 @@ public class OrderCM {
         this.deliveryDate = deliveryDate;
         this.orderDetails = orderDetails;
         this.dealer = dealer;
+        this.deliveryStatus = deliveryStatus;
     }
 
     public Integer getIdOrderCM() {
@@ -118,5 +117,13 @@ public class OrderCM {
 
     public void setDealer(Dealer dealer) {
         this.dealer = dealer;
+    }
+
+    public DeliveryStatus getDeliveryStatus() {
+        return deliveryStatus;
+    }
+
+    public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
     }
 }
