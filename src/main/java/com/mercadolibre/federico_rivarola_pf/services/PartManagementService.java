@@ -1,10 +1,8 @@
 package com.mercadolibre.federico_rivarola_pf.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mercadolibre.federico_rivarola_pf.dtos.PartDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.QueryPartUnitDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.QueryPartsDTO;
-import com.mercadolibre.federico_rivarola_pf.model.Part;
 import com.mercadolibre.federico_rivarola_pf.model.PartRecord;
 import com.mercadolibre.federico_rivarola_pf.model.Provider;
 import com.mercadolibre.federico_rivarola_pf.model.Stock;
@@ -15,22 +13,15 @@ import com.mercadolibre.federico_rivarola_pf.repositories.IStockRepository;
 import com.mercadolibre.federico_rivarola_pf.services.interfaces.IPartManagementService;
 import com.mercadolibre.federico_rivarola_pf.util.enums.OrderType;
 import com.mercadolibre.federico_rivarola_pf.util.enums.Querytype;
-import net.bytebuddy.asm.Advice;
-import org.hibernate.criterion.Order;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.management.Query;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -181,7 +172,6 @@ public class PartManagementService implements IPartManagementService {
         List<QueryPartUnitDTO> result = new ArrayList<>();
 
         for (PartRecord pr : records) {
-            Provider provider = providerRepository.findById(pr.getPart().getIdProvider().getId());
 
             QueryPartUnitDTO u = objectMapper.convertValue(pr.getPart(), QueryPartUnitDTO.class);
 
