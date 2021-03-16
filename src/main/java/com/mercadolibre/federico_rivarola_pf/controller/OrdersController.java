@@ -28,7 +28,7 @@ public class OrdersController {
 
     @GetMapping(params = {"dealerNumber", "deliveryStatus", "order"})
     public OrderResponseDTO getOrder(@RequestParam String dealerNumber,
-                                   @RequestParam String deliveryStatus, @RequestParam OrderType order){
+                                   @RequestParam String deliveryStatus, @RequestParam Integer order){
 
         return ordersService.getByDealerNumberAndDeliveryStatusSorter(dealerNumber, deliveryStatus, order);
     }
@@ -41,7 +41,7 @@ public class OrdersController {
 
     @GetMapping(params = {"dealerNumber", "order"})
     public OrderResponseDTO getOrder(@RequestParam String dealerNumber,
-                                   @RequestParam OrderType order){
+                                   @RequestParam Integer order){
 
         return ordersService.getByDealerNumberSorter(dealerNumber, order);
     }

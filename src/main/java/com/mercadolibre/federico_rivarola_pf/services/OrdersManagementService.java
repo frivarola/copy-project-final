@@ -5,6 +5,7 @@ import com.mercadolibre.federico_rivarola_pf.dtos.OrderDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.OrderDetailDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.OrderResponseDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.QueryPartUnitDTO;
+import com.mercadolibre.federico_rivarola_pf.exceptions.ApiException;
 import com.mercadolibre.federico_rivarola_pf.model.Dealer;
 import com.mercadolibre.federico_rivarola_pf.model.OrderCM;
 import com.mercadolibre.federico_rivarola_pf.model.OrderDetailCM;
@@ -100,14 +101,14 @@ public class OrdersManagementService implements IOrdersManagementService {
     }
 
     @Override
-    public OrderResponseDTO getByDealerNumberSorter(String dealerNumber, OrderType orderType) throws ResponseStatusException{
+    public OrderResponseDTO getByDealerNumberSorter(String dealerNumber, Integer orderType) throws ResponseStatusException{
         OrderResponseDTO response = getByDealerNumber(dealerNumber);
         List<OrderDTO> orderDTOS = response.getOrders();
-        if(OrderType.ASC.equals(orderType)){
+        if(OrderType.ASC.ordinal() == orderType){
             Collections.sort(orderDTOS, Comparator.comparing(o -> LocalDate.parse(o.getOrderDate(), dateFormatter)));
         }
         //OrderType.DESC; codigo de parte descendente
-        if(OrderType.DESC.equals(orderType)){
+        if(OrderType.DESC.ordinal() == orderType){
             Collections.sort(orderDTOS, (a,b) -> LocalDate.parse(b.getOrderDate(), dateFormatter).compareTo(LocalDate.parse(a.getOrderDate(), dateFormatter)));
         }
 
@@ -117,14 +118,14 @@ public class OrdersManagementService implements IOrdersManagementService {
     }
 
     @Override
-    public OrderResponseDTO getByDealerNumberAndDeliveryStatusSorter(String dealerNumber, String deliveryStatus, OrderType orderType) throws ResponseStatusException {
+    public OrderResponseDTO getByDealerNumberAndDeliveryStatusSorter(String dealerNumber, String deliveryStatus, Integer orderType) throws ResponseStatusException {
         OrderResponseDTO response = getByDealerNumberAndDeliveryStatus(dealerNumber, deliveryStatus);
         List<OrderDTO> orderDTOS = response.getOrders();
-        if(OrderType.ASC.equals(orderType)){
+        if(OrderType.ASC.ordinal() == orderType){
             Collections.sort(orderDTOS, Comparator.comparing(o -> LocalDate.parse(o.getOrderDate(), dateFormatter)));
         }
         //OrderType.DESC; codigo de parte descendente
-        if(OrderType.DESC.equals(orderType)){
+        if(OrderType.DESC.ordinal() == orderType){
             Collections.sort(orderDTOS, (a,b) -> LocalDate.parse(b.getOrderDate(), dateFormatter).compareTo(LocalDate.parse(a.getOrderDate(), dateFormatter)));
         }
 

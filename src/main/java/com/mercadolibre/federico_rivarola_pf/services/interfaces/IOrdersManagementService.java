@@ -12,7 +12,7 @@ public interface IOrdersManagementService {
     OrderResponseDTO getAll();
     OrderResponseDTO getByDealerNumber(String dealerNumber);
     OrderResponseDTO getByDealerNumberAndDeliveryStatus(String dealerNumber, String deliveryStatus);
-    OrderResponseDTO getByDealerNumberSorter(String dealerNumber, OrderType orderType);
-    OrderResponseDTO getByDealerNumberAndDeliveryStatusSorter(String dealerNumber, String deliveryStatus, OrderType orderType);
+    OrderResponseDTO getByDealerNumberSorter(String dealerNumber, Integer orderType);
+    OrderResponseDTO getByDealerNumberAndDeliveryStatusSorter(String dealerNumber, String deliveryStatus, Integer orderType);
 
 }
