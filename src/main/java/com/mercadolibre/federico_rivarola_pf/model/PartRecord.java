@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class PartRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_part_record")
+    @Column(name = "id_part_record", length = 10)
     private String id;
     @Column(name = "lastModification")
     private String lastModification;

@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "subsidiary")
 public class Subsidiary {
     @Id
-    @Column(name = "id_subsidiary")
+    @Column(name = "id_subsidiary", length = 4)
     private String id;
     @Column(name = "accessToken")
     private String accessToken;

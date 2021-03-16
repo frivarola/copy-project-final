@@ -7,30 +7,44 @@ import javax.persistence.*;
 public class Dealer extends Company{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private String serialNumber;
+    @Column(name="serial_number", length = 15)
+    private String dealerNumber;
+    @ManyToOne
+    @JoinColumn(name="subsidiary_id")
+    private Subsidiary subsidiary;
 
     public Dealer() {
         super();
     }
 
-    public Dealer(String serialNumber) {
-        this.serialNumber = serialNumber;
+    public Dealer(String dealerNumber, Subsidiary subsidiary) {
+        this.dealerNumber = dealerNumber;
+        this.subsidiary = subsidiary;
     }
 
-    public Dealer(String name, String address, String phone, String country, String serialNumber) {
+    public Dealer(String name, String address, String phone, String country, String dealerNumber, Subsidiary subsidiary) {
         super(name, address, phone, country);
-        this.serialNumber = serialNumber;
+        this.dealerNumber = dealerNumber;
+        this.subsidiary = subsidiary;
     }
 
     public Dealer(String name, String address, String phone, String country) {
         super(name, address, phone, country);
     }
 
-    public String getSerialNumber() {
-        return serialNumber;
+    public String getDealerNumber() {
+        return dealerNumber;
     }
 
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setDealerNumber(String dealerNumber) {
+        this.dealerNumber = dealerNumber;
+    }
+
+    public Subsidiary getSubsidiary() {
+        return subsidiary;
+    }
+
+    public void setSubsidiary(Subsidiary subsidiary) {
+        this.subsidiary = subsidiary;
     }
 }

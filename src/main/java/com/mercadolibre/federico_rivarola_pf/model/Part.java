@@ -8,7 +8,7 @@ import java.util.List;
 public class Part {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_part")
+    @Column(name = "id_part", length = 8)
     private String id;
     @Column(name = "description")
     private String description;

@@ -6,9 +6,9 @@ import javax.persistence.*;
 @Table(name = "providers")
 public class Provider {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_provider")
-    private String id;
+    private Integer id;
     @Column(name = "name")
     private String name;
     @Column(name = "address")
@@ -21,7 +21,7 @@ public class Provider {
     public Provider() {
     }
 
-    public Provider(String id, String name, String address, String phone, String country) {
+    public Provider(Integer id, String name, String address, String phone, String country) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -29,11 +29,11 @@ public class Provider {
         this.country = country;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
