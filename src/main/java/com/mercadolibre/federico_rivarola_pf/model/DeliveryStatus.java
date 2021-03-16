@@ -14,6 +14,9 @@ public class DeliveryStatus {
     @Column(name="description")
     private String description;
 
+    public DeliveryStatus() {
+    }
+
     public DeliveryStatus(String code, String description) {
         this.code = code;
         this.description = description;

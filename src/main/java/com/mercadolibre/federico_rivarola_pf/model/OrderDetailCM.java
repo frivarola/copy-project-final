@@ -26,6 +26,9 @@ public class OrderDetailCM {
     @Column(name="reason", length = 100)
     private String reason;
 
+    public OrderDetailCM() {
+    }
+
     public OrderDetailCM(Integer idOrderDetailsCM) {
         this.idOrderDetailsCM = idOrderDetailsCM;
     }

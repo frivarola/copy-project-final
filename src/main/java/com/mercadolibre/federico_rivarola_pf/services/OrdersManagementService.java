@@ -2,10 +2,12 @@ package com.mercadolibre.federico_rivarola_pf.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.federico_rivarola_pf.dtos.OrderDTO;
+import com.mercadolibre.federico_rivarola_pf.dtos.OrderDetailDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.OrderResponseDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.QueryPartUnitDTO;
 import com.mercadolibre.federico_rivarola_pf.model.Dealer;
 import com.mercadolibre.federico_rivarola_pf.model.OrderCM;
+import com.mercadolibre.federico_rivarola_pf.model.OrderDetailCM;
 import com.mercadolibre.federico_rivarola_pf.repositories.IDealerRepository;
 import com.mercadolibre.federico_rivarola_pf.repositories.IOrdersRepository;
 import com.mercadolibre.federico_rivarola_pf.services.interfaces.IOrdersManagementService;
@@ -137,12 +139,26 @@ public class OrdersManagementService implements IOrdersManagementService {
         for (OrderCM o : orders) {
             orderDTO.setOrderNumber(o.getOrderNumberCM());
             orderDTO.setDaysDelay(o.getDaysDelayed());
-            orderDTO.setOrderDetails(o.getOrderDetails());
+            orderDTO.setOrderDetails(convertToListOrderDetailDTO(o.getOrderDetails()));
             orderDTO.setDeliveryStatus(o.getDeliveryStatus().getCode());
             orderDTO.setOrderDate(o.getOrderDate());
 
             orderDTOS.add(orderDTO);
         }
         return orderDTOS;
+    }
+
+    private List<OrderDetailDTO> convertToListOrderDetailDTO(List<OrderDetailCM> details){
+        List<OrderDetailDTO> detailDTOS = new ArrayList<>();
+        OrderDetailDTO dto = new OrderDetailDTO();
+        for (OrderDetailCM d : details) {
+            dto.setPartCode(d.getPart().getId());
+            dto.setDescription(d.getPart().getDescription());
+            dto.setQuantity(d.getQuantity());
+            dto.setReason(d.getReason());
+            dto.setAccountType(d.getAccount().getDescription());
+            detailDTOS.add(dto);
+        }
+        return detailDTOS;
     }
 }

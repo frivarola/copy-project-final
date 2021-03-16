@@ -9,7 +9,7 @@ public class OrderDTO {
     private String orderDate;
     private Integer daysDelay;
     private String deliveryStatus;
-    private List<OrderDetailCM> orderDetails;
+    private List<OrderDetailDTO> orderDetails;
 
     public OrderDTO() {
     }
@@ -46,11 +46,11 @@ public class OrderDTO {
         this.deliveryStatus = deliveryStatus;
     }
 
-    public List<OrderDetailCM> getOrderDetails() {
+    public List<OrderDetailDTO> getOrderDetails() {
         return orderDetails;
     }
 
-    public void setOrderDetails(List<OrderDetailCM> orderDetails) {
+    public void setOrderDetails(List<OrderDetailDTO> orderDetails) {
         this.orderDetails = orderDetails;
     }
 }

@@ -12,6 +12,9 @@ public class AccountType {
     @Column(name = "description")
     private String description;
 
+    public AccountType() {
+    }
+
     public AccountType(Integer id, String description) {
         this.id = id;
         this.description = description;
