@@ -201,7 +201,12 @@ public class PartManagementService implements IPartManagementService {
             Integer quantity = stockDTO.getQuantity();
             if(quantity != null){
                 if(quantity.compareTo(0) >= 0){
-                    Stock stock = new Stock(p, s, quantity);
+
+                    Stock stock = new Stock();
+                    StockCompositeID stockID = new StockCompositeID(p, s);
+                    stock.setId(stockID);
+                    stock.setQuantity(quantity);
+
                     stockRepository.save(stock);
 
                     return new NewStockResponseDTO("201 Created", "Stock has been updated.", "");

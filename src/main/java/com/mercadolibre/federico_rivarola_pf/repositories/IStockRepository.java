@@ -17,13 +17,13 @@ public interface IStockRepository extends CrudRepository<Stock, StockCompositeID
     @Query("SELECT s FROM Stock s")
     List<Stock> findAll();
 
-    @Query("SELECT s FROM Stock s WHERE s.part.id = :idPart")
+    @Query("SELECT s FROM Stock s WHERE s.id.part.id = :idPart")
     List<Stock> findByIdPart(@Param("idPart") String idPart);
 
-    @Query("SELECT s FROM Stock s WHERE s.subsidiary.id = :idSubsidiary")
+    @Query("SELECT s FROM Stock s WHERE s.id.subsidiary.id = :idSubsidiary")
     List<Stock> findByIdSubsidiary(@Param("idSubsidiary") String idSubsidiary);
 
-    @Query("SELECT s FROM Stock s WHERE s.part.id = :idPart AND  s.subsidiary.id = :idSubsidiary")
+    @Query("SELECT s FROM Stock s WHERE s.id.part.id = :idPart AND  s.id.subsidiary.id = :idSubsidiary")
     Stock findByIdPartAndIdSubsidiary(@Param("idPart") String idPart, @Param("idSubsidiary") String idSubsidiary);
 
 }

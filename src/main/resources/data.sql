@@ -1,11 +1,11 @@
 
 
---SUBSIDIARIES
+-- SUBSIDIARIES
 INSERT INTO subsidiary values('0001', null, 'Filial 01 AR', 'calle 01', '11111111', 'ARGENTINA');
 INSERT INTO subsidiary values('0002', null, 'Filial 02 UR', 'calle 02', '21111111', 'CHILE');
 INSERT INTO subsidiary values('0003', null, 'Filial 03 CH', 'calle 03', '31111111', 'URUGUAY');
 
---PROVIDERS
+-- PROVIDERS
 INSERT INTO providers values(1,'calle','argentina','provedor 1', '22222');
 INSERT INTO providers values(2,'calle otra','Uruguay','provedor 2', '23445542');
 INSERT INTO providers values(3,'dir 123','Chile','provedor 3', '15672999');
@@ -48,7 +48,7 @@ insert into part_records values('0000000015','2020-03-01', 3100, 3000, 2800,'JJ8
 
 
 
---STOCK
+-- STOCK
 
 insert into stock values(100, '0001', 'AA10');
 insert into stock values(30, '0002', 'AA10');
@@ -68,19 +68,19 @@ insert into stock values(90, '0002', 'IJ31');
 insert into stock values(150, '0003', 'BA21');
 
 
---DELIVERY STATUS
+-- DELIVERY STATUS
 
 insert into delivery_status values(1, 'P','Pendientes de entrega');
 insert into delivery_status values(2, 'D','Demorado');
 insert into delivery_status values(3, 'F','Finalizado');
 insert into delivery_status values(4, 'C','Cancelado');
 
---PART STATUS
+-- PART STATUS
 insert into part_status (id_part_status, code, description)
 values (1, 'N', 'Normal'),
        (2, 'D', 'Demorado');
 
---ACCOUNT TYPES
+-- ACCOUNT TYPES
 insert into account_types
 (id_account_type, description)
 values (1, 'Repuestos'), (2, 'Garantía');
@@ -95,7 +95,7 @@ values ('0001', '0001', 'calle 1', 'argentina', 'Concesionario 01 AR', '1111111'
        ('0002', '0005', 'street 1', 'Chile', 'Concesionario 02 UY','111111'),
        ('0001', '0006', 'street 2', 'argentina', 'Concesionario 02 AR','111111');
 
---ORDERS
+-- ORDERS
 
 INSERT INTO `deluxedb`.`orders`
 (`id_order_cm`,`days_delayed`,`delivery_date`,`order_date`,`order_number_ce`,`order_number_cm`,`serialNumber`,`id_dealer`,`id_delivery_status`)
@@ -108,7 +108,7 @@ VALUES
 (6,1,'2021-03-16','2021-03-15','0001-00000001','0004-0002-00000001',4411123,'0004',1);
 
 
---ORDER DETAILS
+-- ORDER DETAILS
 INSERT INTO `deluxedb`.`order_details_cm`
 (`id_order_details_cm`,`quantity`,`reason`,`id_account_type`,`id_order_cm`,`part_code`,`id_part_status`)
 VALUES
