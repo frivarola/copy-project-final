@@ -3,14 +3,15 @@ package com.mercadolibre.federico_rivarola_pf.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.federico_rivarola_pf.dtos.OrderDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.OrderDetailDTO;
+import com.mercadolibre.federico_rivarola_pf.dtos.requests.NewOrderRequestDTO;
+import com.mercadolibre.federico_rivarola_pf.dtos.responses.NewOrderResponseDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.OrderResponseDTO;
-import com.mercadolibre.federico_rivarola_pf.dtos.responses.QueryPartUnitDTO;
 import com.mercadolibre.federico_rivarola_pf.exceptions.ApiException;
 import com.mercadolibre.federico_rivarola_pf.model.Dealer;
 import com.mercadolibre.federico_rivarola_pf.model.OrderCM;
 import com.mercadolibre.federico_rivarola_pf.model.OrderDetailCM;
-import com.mercadolibre.federico_rivarola_pf.repositories.IDealerRepository;
-import com.mercadolibre.federico_rivarola_pf.repositories.IOrdersRepository;
+import com.mercadolibre.federico_rivarola_pf.model.Part;
+import com.mercadolibre.federico_rivarola_pf.repositories.*;
 import com.mercadolibre.federico_rivarola_pf.services.interfaces.IOrdersManagementService;
 import com.mercadolibre.federico_rivarola_pf.util.enums.OrderType;
 import org.springframework.http.HttpStatus;
@@ -31,14 +32,17 @@ import java.util.regex.Pattern;
 public class OrdersManagementService implements IOrdersManagementService {
     private final IOrdersRepository ordersRepository;
     private final IDealerRepository dealerRepository;
+    private final IPartsRepository partsRepository;
+
     private final ObjectMapper objectMapper;
     private final String datePattern = "yyyy-MM-dd";
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
     private final Pattern orderNumberCMPattern = Pattern.compile("\\d{4}-\\d{4}-\\d{8}");
 
-    public OrdersManagementService(IOrdersRepository ordersRepository, IDealerRepository dealerRepository, ObjectMapper objectMapper) {
+    public OrdersManagementService(IOrdersRepository ordersRepository, IDealerRepository dealerRepository, IPartsRepository partsRepository, ObjectMapper objectMapper) {
         this.ordersRepository = ordersRepository;
         this.dealerRepository = dealerRepository;
+        this.partsRepository = partsRepository;
         this.objectMapper = objectMapper;
     }
 
@@ -104,14 +108,14 @@ public class OrdersManagementService implements IOrdersManagementService {
     }
 
     @Override
-    public OrderResponseDTO getByDealerNumberSorter(String dealerNumber, Integer orderType) throws ResponseStatusException{
+    public OrderResponseDTO getByDealerNumberSorter(String dealerNumber, Integer orderType) throws ResponseStatusException {
         OrderResponseDTO response = getByDealerNumber(dealerNumber);
         List<OrderDTO> orderDTOS = response.getOrders();
-        if(OrderType.ASC.ordinal() == orderType){
+        if (OrderType.ASC.ordinal() == orderType) {
             orderDTOS.sort(Comparator.comparing(o -> LocalDate.parse(o.getOrderDate(), dateFormatter)));
         }
         //OrderType.DESC; codigo de parte descendente
-        if(OrderType.DESC.ordinal() == orderType){
+        if (OrderType.DESC.ordinal() == orderType) {
             orderDTOS.sort((a, b) -> LocalDate.parse(b.getOrderDate(), dateFormatter).compareTo(LocalDate.parse(a.getOrderDate(), dateFormatter)));
         }
 
@@ -124,12 +128,12 @@ public class OrdersManagementService implements IOrdersManagementService {
     public OrderResponseDTO getByDealerNumberAndDeliveryStatusSorter(String dealerNumber, String deliveryStatus, Integer orderType) throws ResponseStatusException {
         OrderResponseDTO response = getByDealerNumberAndDeliveryStatus(dealerNumber, deliveryStatus);
         List<OrderDTO> orderDTOS = response.getOrders();
-        if(OrderType.ASC.ordinal() == orderType){
+        if (OrderType.ASC.ordinal() == orderType) {
             Collections.sort(orderDTOS, Comparator.comparing(o -> LocalDate.parse(o.getOrderDate(), dateFormatter)));
         }
         //OrderType.DESC; codigo de parte descendente
-        if(OrderType.DESC.ordinal() == orderType){
-            Collections.sort(orderDTOS, (a,b) -> LocalDate.parse(b.getOrderDate(), dateFormatter).compareTo(LocalDate.parse(a.getOrderDate(), dateFormatter)));
+        if (OrderType.DESC.ordinal() == orderType) {
+            Collections.sort(orderDTOS, (a, b) -> LocalDate.parse(b.getOrderDate(), dateFormatter).compareTo(LocalDate.parse(a.getOrderDate(), dateFormatter)));
         }
 
         response.setOrders(orderDTOS);
@@ -141,12 +145,12 @@ public class OrdersManagementService implements IOrdersManagementService {
     public OrderDTO getByOrderNumberCM(String orderNumberCM) {
         Matcher validateRegex = orderNumberCMPattern.matcher(orderNumberCM);
 
-        if(!validateRegex.matches()){
+        if (!validateRegex.matches()) {
             throw new ApiException("Error", "Invalid Order Number CM", HttpStatus.BAD_REQUEST.value());
         }
 
         OrderCM o = ordersRepository.findByOrderNumberCM(orderNumberCM);
-        if(o != null){
+        if (o != null) {
 
             OrderDTO response = new OrderDTO();
             response.setOrderNumber(o.getOrderNumberCE());
@@ -159,6 +163,31 @@ public class OrdersManagementService implements IOrdersManagementService {
         }
 
         throw new ApiException("Error", "Not found orders", HttpStatus.NOT_FOUND.value());
+    }
+
+    @Override
+    public NewOrderResponseDTO createOrder(NewOrderRequestDTO newOrder) {
+        String subsidiary = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Dealer dealer = dealerRepository.findDealerByIdSubsidiary(newOrder.getDealerNumber(), subsidiary);
+        
+        if (dealer != null) {
+            List<OrderDetailCM> details = convertToListOrderDetailCM(newOrder.getOrderDetails());
+
+            OrderCM orderCM = new OrderCM();
+            orderCM.setDealer(dealer);
+            orderCM.setOrderDate(LocalDate.now().format(dateFormatter));
+            orderCM.setOrderDetails(details);
+            orderCM.setDaysDelayed(0);
+            String numberCE = generateOrderNumberCE(dealer.getDealerNumber());
+            orderCM.setOrderNumberCE(numberCE);
+            String[] numbers = numberCE.split("-");
+            orderCM.setOrderNumberCM(numbers[1].concat("-").concat(numbers[2]));
+
+            ordersRepository.save(orderCM);
+        }
+
+        throw new ApiException("Error", "Not found dealer indicated for the subsidiary", HttpStatus.NOT_FOUND.value());
+
     }
 
     private List<OrderDTO> convertToListOrderDTO(List<OrderCM> orders) {
@@ -176,7 +205,7 @@ public class OrdersManagementService implements IOrdersManagementService {
         return orderDTOS;
     }
 
-    private List<OrderDetailDTO> convertToListOrderDetailDTO(List<OrderDetailCM> details){
+    private List<OrderDetailDTO> convertToListOrderDetailDTO(List<OrderDetailCM> details) {
         List<OrderDetailDTO> detailDTOS = new ArrayList<>();
         OrderDetailDTO dto = new OrderDetailDTO();
         for (OrderDetailCM d : details) {
@@ -188,5 +217,46 @@ public class OrdersManagementService implements IOrdersManagementService {
             detailDTOS.add(dto);
         }
         return detailDTOS;
+    }
+
+    private List<OrderDetailCM> convertToListOrderDetailCM(List<OrderDetailDTO> dtos) {
+        List<OrderDetailCM> details = new ArrayList<>();
+        OrderDetailCM item = new OrderDetailCM();
+        for (OrderDetailDTO d : dtos) {
+            if (d.getQuantity() >= 0) {
+                Part p = partsRepository.findByIdPart(d.getPartCode());
+
+                if (p != null) {
+                    item.setPart(p);
+                    item.setQuantity(d.getQuantity());
+                    details.add(item);
+                } else {
+                    throw new ApiException("Invalid Part", "Order has been canceled because part ".concat(d.getPartCode()).concat(" not exist."), HttpStatus.BAD_REQUEST.value());
+                }
+            } else {
+                throw new ApiException("Invalid Quantity", "Order has been canceled because quantity is less than 0.", HttpStatus.BAD_REQUEST.value());
+            }
+        }
+        return details;
+    }
+
+    private String generateOrderNumberCE(String dealerNumber){
+        String subsidiary = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long count = ordersRepository.findByDealerNumber(dealerNumber).stream().count();
+        count += 1;
+        String number = count.toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append(dealerNumber);
+        builder.append('-');
+        builder.append(subsidiary);
+        builder.append('-');
+
+        for(int i = 0; number.length() < 8; i++){
+            number = "0".concat(number);
+        }
+        builder.append(number);
+
+
+        return builder.toString();
     }
 }
