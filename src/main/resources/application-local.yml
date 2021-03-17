@@ -3,19 +3,30 @@
 # Overrides application.yml default properties
 
 spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2
   datasource:
-#    initialization-mode: always
+    initialization-mode: always
     data: classpath:/data.sql
-    driver:
-      class: com.mysql.jdbc.Driver
-    url: jdbc:mysql://proxysql.master.meliseginf.com:6612/deluxedb?useSSL=true&serverTimezone=UTC&characterEncoding=UTF-8
-    username: ${LOCAL_DB_USER}
-    password: ${LOCAL_DB_PASS}
+    url: jdbc:h2:file:~/test
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+#  datasource:
+#    initialization-mode: always
+#    data: classpath:/data.sql
+#    driver:
+#      class: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://proxysql.master.meliseginf.com:6612/deluxedb?useSSL=true&serverTimezone=UTC&characterEncoding=UTF-8
+#    username: ${LOCAL_DB_USER}
+#    password: ${LOCAL_DB_PASS}
   jpa:
     database: mysql
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database-platform: org.hibernate.dialect.MySQL8Dialect
