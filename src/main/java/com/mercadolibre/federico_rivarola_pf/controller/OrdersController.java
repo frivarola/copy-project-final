@@ -1,6 +1,8 @@
 package com.mercadolibre.federico_rivarola_pf.controller;
 
 import com.mercadolibre.federico_rivarola_pf.dtos.OrderDTO;
+import com.mercadolibre.federico_rivarola_pf.dtos.requests.NewOrderRequestDTO;
+import com.mercadolibre.federico_rivarola_pf.dtos.responses.NewOrderResponseDTO;
 import com.mercadolibre.federico_rivarola_pf.dtos.responses.OrderResponseDTO;
 import com.mercadolibre.federico_rivarola_pf.services.OrdersManagementService;
 import com.mercadolibre.federico_rivarola_pf.util.enums.OrderType;
@@ -48,6 +50,11 @@ public class OrdersController {
                                    @RequestParam Integer order){
 
         return ordersService.getByDealerNumberSorter(dealerNumber, order);
+    }
+
+    @PostMapping()
+    public NewOrderResponseDTO createOrder(@RequestBody NewOrderRequestDTO newOrder){
+        return ordersService.createOrder(newOrder);
     }
 
 }

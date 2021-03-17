@@ -169,7 +169,7 @@ public class OrdersManagementService implements IOrdersManagementService {
     public NewOrderResponseDTO createOrder(NewOrderRequestDTO newOrder) {
         String subsidiary = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Dealer dealer = dealerRepository.findDealerByIdSubsidiary(newOrder.getDealerNumber(), subsidiary);
-        
+
         if (dealer != null) {
             List<OrderDetailCM> details = convertToListOrderDetailCM(newOrder.getOrderDetails());
 
@@ -184,6 +184,8 @@ public class OrdersManagementService implements IOrdersManagementService {
             orderCM.setOrderNumberCM(numbers[1].concat("-").concat(numbers[2]));
 
             ordersRepository.save(orderCM);
+
+            return new NewOrderResponseDTO(numberCE,"Order has been created.");
         }
 
         throw new ApiException("Error", "Not found dealer indicated for the subsidiary", HttpStatus.NOT_FOUND.value());
